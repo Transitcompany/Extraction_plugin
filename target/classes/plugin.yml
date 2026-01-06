@@ -1,0 +1,69 @@
+name: Extraction
+main: com.extraction.ExtractionPlugin
+version: '1.0'
+api: '1.21'
+api-version: 1.21
+commands:
+  lootchestset:
+    description: Setup or update a loot chest
+    usage: /lootchestset
+    permission: extraction.admin
+  resetloot:
+    description: Force reset all loot
+    usage: /resetloot
+    permission: extraction.admin
+  shop:
+    description: Open the shop GUI
+    usage: /shop
+  stash:
+    description: Open your personal stash
+    usage: /stash
+  extractpoint:
+    description: Setup an extraction point
+    usage: /extractpoint
+    permission: extraction.admin
+  setworld:
+    description: Set extraction/lobby world
+    usage: /setworld <extract|lobby> <World>
+    permission: extraction.admin
+  extractoutbanner:
+    description: Set an extract out banner
+    usage: /extractoutbanner
+    permission: extraction.admin
+  balance:
+    description: Check money balance
+    usage: /balance
+  givemoney:
+    description: Give money to a player (admin)
+    usage: /givemoney <player> <amount>
+    permission: extraction.admin
+  sell:
+    description: Open the sell GUI
+    usage: /sell
+  setextracttopoint:
+    description: Set an extract-to point (max 30)
+    usage: /setextracttopoint
+    permission: extraction.admin
+  extractgive:
+    description: Give special extraction items to players
+    usage: /extractgive <player> <banner|flare|teleporter> [amount]
+    permission: extraction.admin
+  auction:
+    description: Open the auction house
+    usage: /auction [sell <price>|browse|my|collect]
+
+  profile:
+    description: View player profile and stats
+    usage: /profile [player]
+  wipe:
+    description: Wipe all player data (admin only)
+    usage: /wipe <player>
+    permission: extraction.admin
+  resetstock:
+    description: Reset shop stock
+    usage: /resetstock
+    permission: extraction.admin
+  disableresourcepack:
+    description: Toggle resource pack enforcement
+    usage: /disableresourcepack [toggle]
+    permission: extraction.resourcepack.manage
