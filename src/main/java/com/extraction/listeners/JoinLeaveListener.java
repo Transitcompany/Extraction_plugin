@@ -1,10 +1,6 @@
 package com.extraction.listeners;
 
-import com.extraction.ExtractionPlugin;
 import com.extraction.extract.ExtractManager;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,90 +13,43 @@ import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-public class DeathListener implements Listener {
+public class JoinLeaveListener implements Listener {
 
-    private final ExtractionPlugin plugin;
     private final ExtractManager extractManager;
-    private final Set<UUID> pendingLobbyTeleport = new HashSet<>();
 
-    public DeathListener(
-        ExtractionPlugin plugin,
-        ExtractManager extractManager
-    ) {
-        this.plugin = plugin;
+    public JoinLeaveListener(ExtractManager extractManager) {
         this.extractManager = extractManager;
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        String lobbyWorld = extractManager.getLobbyWorld();
-
-        // Only queue teleport if they died outside the lobby
-        if (
-            lobbyWorld != null && player.getWorld().getName().equals(lobbyWorld)
-        ) {
-            return; // Died in lobby, no teleport needed
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "+" + ChatColor.BLACK + "] " + ChatColor.AQUA + event.getPlayer().getName() + " joined");
+        if (!event.getPlayer().hasPlayedBefore()) {
+            giveStartingKit(event.getPlayer());
         }
 
-        // Mark player for teleport on respawn
-        pendingLobbyTeleport.add(player.getUniqueId());
-
-        player.sendMessage(
-            ChatColor.RED +
-                "You died! You will be sent to the lobby on respawn."
-        );
+        // Teleport back to lobby if rejoining in lobby world
+        String lobbyWorld = extractManager.getLobbyWorld();
+        String extractWorld = extractManager.getExtractWorld();
+        if (lobbyWorld != null && event.getPlayer().getWorld().getName().equals(lobbyWorld)) {
+            World world = Bukkit.getWorld(lobbyWorld);
+            if (world != null) {
+                Location spawn = world.getSpawnLocation();
+                event.getPlayer().teleport(spawn);
+            }
+        }
+        // Do not teleport if in extraction world
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
-
-        // Give starting kit on respawn after death
-        giveStartingKit(player);
-
-        if (!pendingLobbyTeleport.contains(uuid)) {
-            return;
-        }
-
-        pendingLobbyTeleport.remove(uuid);
-
-        String lobbyWorld = extractManager.getLobbyWorld();
-        if (lobbyWorld == null) {
-            return;
-        }
-
-        World world = Bukkit.getWorld(lobbyWorld);
-        if (world == null) {
-            return;
-        }
-
-        Location spawn = world.getSpawnLocation();
-
-        // Set respawn location to lobby
-        event.setRespawnLocation(spawn);
-
-        // Also schedule a delayed teleport as backup
-        Bukkit.getScheduler().runTaskLater(
-            plugin,
-            () -> {
-                if (player.isOnline()) {
-                    player.teleport(spawn);
-                    player.sendMessage(
-                        ChatColor.GREEN + "You have been returned to the lobby."
-                    );
-                }
-            },
-            5L
-        );
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "-" + ChatColor.BLACK + "] " + ChatColor.AQUA + event.getPlayer().getName() + " left");
     }
 
     private void giveStartingKit(Player player) {

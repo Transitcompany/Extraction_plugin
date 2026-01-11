@@ -7,6 +7,7 @@ com\extraction\listeners\TradeListener.class
 com\extraction\stash\StashManager.class
 com\extraction\listeners\BannerListener$1.class
 com\extraction\listeners\BannerListener.class
+com\extraction\listeners\JoinLeaveListener.class
 com\extraction\listeners\CustomItemListener.class
 com\extraction\listeners\CustomItemListener$6.class
 com\extraction\crypto\CryptoManager$CryptoWallet.class

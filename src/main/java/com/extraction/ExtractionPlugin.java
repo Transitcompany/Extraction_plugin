@@ -34,6 +34,7 @@ import com.extraction.listeners.CryptoWalletListener;
 import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
 import com.extraction.listeners.FishingListener;
+import com.extraction.listeners.JoinLeaveListener;
 import com.extraction.listeners.ProximityChatListener;
 import com.extraction.listeners.TradeListener;
 import com.extraction.managers.TradeManager;
@@ -162,17 +163,10 @@ public class ExtractionPlugin extends JavaPlugin {
             .registerEvents(new BannerListener(this, extractManager), this);
         getServer()
             .getPluginManager()
-            .registerEvents(new CustomItemListener(this), this);
+            .registerEvents(new FishingListener(this), this);
         getServer()
             .getPluginManager()
-            .registerEvents(new CryptoWalletListener(this), this);
-        getServer()
-            .getPluginManager()
-            .registerEvents(levelingManager, this);
-        getServer().getPluginManager().registerEvents(new com.extraction.listeners.WeaponListener(this), this);
-        getServer().getPluginManager().registerEvents(new TradeListener(this, tradeManager), this);
-        getServer().getPluginManager().registerEvents(new ProximityChatListener(this), this);
-        getServer().getPluginManager().registerEvents(new FishingListener(this), this);
+            .registerEvents(new JoinLeaveListener(extractManager), this);
         // temperature subsystem removed
     }
 
