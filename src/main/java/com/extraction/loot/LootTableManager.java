@@ -6,8 +6,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -74,6 +78,12 @@ public class LootTableManager {
 
         // Misc common items - Increased arrow amount and torch chance
         commonLoot.add(new LootEntry(Material.LEATHER, 2, 6, 0.5));
+
+        // Leather armor with low durability and trims
+        commonLoot.add(new LootEntry(Material.LEATHER_HELMET, 1, 1, 0.3, 0.1, 0.3, true));
+        commonLoot.add(new LootEntry(Material.LEATHER_CHESTPLATE, 1, 1, 0.3, 0.1, 0.3, true));
+        commonLoot.add(new LootEntry(Material.LEATHER_LEGGINGS, 1, 1, 0.3, 0.1, 0.3, true));
+        commonLoot.add(new LootEntry(Material.LEATHER_BOOTS, 1, 1, 0.3, 0.1, 0.3, true));
         commonLoot.add(new LootEntry(Material.FEATHER, 3, 10, 0.4));
         commonLoot.add(new LootEntry(Material.FLINT, 2, 6, 0.4));
         commonLoot.add(new LootEntry(Material.ARROW, 8, 24, 0.6)); // Increased amount and chance
@@ -91,7 +101,7 @@ public class LootTableManager {
         rareLoot.add(new LootEntry(Material.EMERALD, 4, 12, 0.9)); // Increased amount and chance (was 0.7)
 
         // Iron gear - much better durability and drop chance
-        rareLoot.add(new LootEntry(Material.IRON_HELMET, 1, 1, 0.8, 0.5, 0.9)); // Higher chance and min durability (was 0.3)
+        rareLoot.add(new LootEntry(Material.IRON_HELMET, 1, 1, 0.8, 0.5, 0.9, true)); // Higher chance and min durability, with trim
         rareLoot.add(
             new LootEntry(Material.IRON_CHESTPLATE, 1, 1, 0.75, 0.5, 0.9) // Higher chance and min durability
         );
@@ -227,26 +237,36 @@ public class LootTableManager {
             random.nextInt(entry.maxAmount - entry.minAmount + 1);
         ItemStack item = new ItemStack(entry.material, amount);
 
+        ItemMeta meta = item.getItemMeta();
+
         // Apply durability damage if specified
-        if (entry.hasDurabilityRange()) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta instanceof Damageable) {
-                Damageable damageable = (Damageable) meta;
-                int maxDurability = entry.material.getMaxDurability();
-                if (maxDurability > 0) {
-                    // Calculate durability between min and max percentage
-                    double durabilityPercent =
-                        entry.minDurability +
-                        (random.nextDouble() *
-                            (entry.maxDurability - entry.minDurability));
-                    int damage = (int) (maxDurability *
-                        (1.0 - durabilityPercent));
-                    damageable.setDamage(damage);
-                    item.setItemMeta(meta);
-                }
+        if (entry.hasDurabilityRange() && meta instanceof Damageable) {
+            Damageable damageable = (Damageable) meta;
+            int maxDurability = entry.material.getMaxDurability();
+            if (maxDurability > 0) {
+                // Calculate durability between min and max percentage
+                double durabilityPercent =
+                    entry.minDurability +
+                    (random.nextDouble() *
+                        (entry.maxDurability - entry.minDurability));
+                int damage = (int) (maxDurability *
+                    (1.0 - durabilityPercent));
+                damageable.setDamage(damage);
             }
         }
 
+        // Apply trim if specified
+        if (entry.hasTrim && meta instanceof ArmorMeta) {
+            ArmorMeta armorMeta = (ArmorMeta) meta;
+            TrimMaterial[] materials = {TrimMaterial.IRON, TrimMaterial.COPPER, TrimMaterial.GOLD};
+            TrimPattern[] patterns = {TrimPattern.EYE, TrimPattern.SPIRE, TrimPattern.WAYFINDER, TrimPattern.SHAPER};
+            TrimMaterial trimMaterial = materials[random.nextInt(materials.length)];
+            TrimPattern pattern = patterns[random.nextInt(patterns.length)];
+            ArmorTrim trim = new ArmorTrim(trimMaterial, pattern);
+            armorMeta.setTrim(trim);
+        }
+
+        item.setItemMeta(meta);
         return item;
     }
 
@@ -280,6 +300,7 @@ public class LootTableManager {
         final double dropChance;
         final double minDurability;
         final double maxDurability;
+        final boolean hasTrim;
 
         // Constructor for items without durability variation
         LootEntry(
@@ -294,6 +315,7 @@ public class LootTableManager {
             this.dropChance = dropChance;
             this.minDurability = -1;
             this.maxDurability = -1;
+            this.hasTrim = false;
         }
 
         // Constructor for items with durability variation (damaged items)
@@ -311,6 +333,26 @@ public class LootTableManager {
             this.dropChance = dropChance;
             this.minDurability = minDurability;
             this.maxDurability = maxDurability;
+            this.hasTrim = false;
+        }
+
+        // Constructor for items with durability and trim
+        LootEntry(
+            Material material,
+            int minAmount,
+            int maxAmount,
+            double dropChance,
+            double minDurability,
+            double maxDurability,
+            boolean hasTrim
+        ) {
+            this.material = material;
+            this.minAmount = minAmount;
+            this.maxAmount = maxAmount;
+            this.dropChance = dropChance;
+            this.minDurability = minDurability;
+            this.maxDurability = maxDurability;
+            this.hasTrim = hasTrim;
         }
 
         boolean hasDurabilityRange() {

@@ -33,8 +33,12 @@ commands:
   balance:
     description: Check money balance
     usage: /balance
+  setmoney:
+    description: Set a player's balance to a value or text (admin)
+    usage: /setmoney <player> <amount>
+    permission: extraction.admin
   givemoney:
-    description: Give money to a player (admin)
+    description: Add money to a player (admin)
     usage: /givemoney <player> <amount>
     permission: extraction.admin
   sell:
@@ -67,3 +71,16 @@ commands:
     description: Toggle resource pack enforcement
     usage: /disableresourcepack [toggle]
     permission: extraction.resourcepack.manage
+  trade:
+    description: Send a money trade offer to a player
+    usage: /trade <player>
+  accepttrade:
+    description: Accept a pending trade offer
+    usage: /accepttrade
+  declinetrade:
+    description: Decline a pending trade offer
+    usage: /declinetrade
+  tempevent:
+    description: Trigger temperature events
+    usage: /tempevent <heatwave|cold|end>
+    permission: extraction.admin

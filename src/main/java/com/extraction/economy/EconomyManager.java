@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class EconomyManager {
     private final ExtractionPlugin plugin;
-    private final Map<UUID, Double> balances = new HashMap<>();
+    private final Map<UUID, String> balances = new HashMap<>();
     private File dataFile;
     private YamlConfiguration config;
 
@@ -26,32 +26,49 @@ public class EconomyManager {
 
     private void loadBalances() {
         for (String key : config.getKeys(false)) {
-            balances.put(UUID.fromString(key), config.getDouble(key));
+            balances.put(UUID.fromString(key), config.getString(key, "0"));
         }
     }
 
     public void saveBalances() {
-        for (Map.Entry<UUID, Double> entry : balances.entrySet()) {
+        for (Map.Entry<UUID, String> entry : balances.entrySet()) {
             config.set(entry.getKey().toString(), entry.getValue());
         }
         try { config.save(dataFile); } catch (IOException ignored) {}
     }
 
-    public double getBalance(UUID uuid) {
-        return balances.getOrDefault(uuid, 0.0);
+    public String getBalance(UUID uuid) {
+        return balances.getOrDefault(uuid, "0");
     }
-    public void setBalance(UUID uuid, double amount) {
+    public void setBalance(UUID uuid, String amount) {
         balances.put(uuid, amount);
         saveBalances();
     }
     public boolean takeBalance(UUID uuid, double amt) {
-        double cur = getBalance(uuid);
-        if (cur < amt) return false;
-        setBalance(uuid, cur - amt);
-        return true;
+        try {
+            double cur = Double.parseDouble(getBalance(uuid));
+            if (cur < amt) return false;
+            setBalance(uuid, String.valueOf(cur - amt));
+            return true;
+        } catch (NumberFormatException e) {
+            return false; // can't take from non-numeric
+        }
     }
     public void addBalance(UUID uuid, double amt) {
-        setBalance(uuid, getBalance(uuid) + amt);
+        try {
+            double cur = Double.parseDouble(getBalance(uuid));
+            setBalance(uuid, String.valueOf(cur + amt));
+        } catch (NumberFormatException e) {
+            setBalance(uuid, String.valueOf(amt)); // set to amt if not number
+        }
+    }
+
+    public double getBalanceAsDouble(UUID uuid) {
+        try {
+            return Double.parseDouble(getBalance(uuid));
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
     }
 }
 

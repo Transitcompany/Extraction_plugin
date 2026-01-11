@@ -207,7 +207,7 @@ public class CryptoManager {
         gui.setItem(31, infoItem);
         
         // Add balance display (slot 49)
-        double playerBalance = economyManager.getBalance(player.getUniqueId());
+        double playerBalance = economyManager.getBalanceAsDouble(player.getUniqueId());
         ItemStack balanceItem = new ItemStack(Material.EMERALD);
         ItemMeta balanceMeta = balanceItem.getItemMeta();
         if (balanceMeta != null) {
@@ -241,7 +241,7 @@ public class CryptoManager {
             player.sendMessage(ChatColor.GREEN + "Bought " + String.format("%.8f", amount) + " " + symbol + " for $" + String.format("%.2f", cost));
             return true;
         } else {
-            double balance = economyManager.getBalance(player.getUniqueId());
+            double balance = economyManager.getBalanceAsDouble(player.getUniqueId());
             player.sendMessage(ChatColor.RED + "Insufficient balance! Need $" + String.format("%.2f", cost) + " (you have $" + String.format("%.2f", balance) + ")");
             return false;
         }

@@ -27,8 +27,8 @@ public class BalanceCommand implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        double bal = economyManager.getBalance(player.getUniqueId());
-        player.sendMessage("Your balance: $" + String.format("%.2f", bal));
+        String bal = economyManager.getBalance(player.getUniqueId());
+        player.sendMessage("Your balance: " + bal);
         return true;
     }
 }

@@ -56,7 +56,7 @@ public class WipeCommand implements CommandExecutor, TabCompleter {
         
         sender.sendMessage("§eWiping data for player: §a" + target.getName());
         
-        economyManager.setBalance(uuid, 0.0);
+        economyManager.setBalance(uuid, "0");
         playerDataManager.wipePlayerData(uuid);
         
         File stashFile = new File(new File(plugin.getDataFolder(), "stashes"), uuid + ".yml");

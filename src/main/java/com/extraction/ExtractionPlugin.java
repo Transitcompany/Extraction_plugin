@@ -1,8 +1,14 @@
 package com.extraction;
 
 import com.extraction.auction.AuctionManager;
+import com.extraction.commands.AcceptTradeCommand;
 import com.extraction.commands.AuctionCommand;
+import com.extraction.commands.DeclineTradeCommand;
+import com.extraction.commands.GiveMoneyCommand;
 import com.extraction.commands.ResetStockCommand;
+import com.extraction.commands.SetMoneyCommand;
+import com.extraction.commands.TempEventCommand;
+import com.extraction.commands.TradeCommand;
 import com.extraction.crypto.CryptoManager;
 import com.extraction.resources.ResourcePackManager;
 import com.extraction.commands.BalanceCommand;
@@ -28,6 +34,12 @@ import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
 import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
+import com.extraction.listeners.FishingListener;
+import com.extraction.listeners.ProximityChatListener;
+import com.extraction.listeners.TemperatureListener;
+import com.extraction.listeners.TradeListener;
+import com.extraction.managers.TemperatureManager;
+import com.extraction.managers.TradeManager;
 import com.extraction.loot.LootContainerManager;
 import com.extraction.loot.LootTableManager;
 import com.extraction.shop.ShopManager;
@@ -47,6 +59,9 @@ public class ExtractionPlugin extends JavaPlugin {
     private LevelingManager levelingManager;
     private CryptoManager cryptoManager;
     private ResourcePackManager resourcePackManager;
+    private TradeManager tradeManager;
+    private TemperatureManager temperatureManager;
+    private String lobbyWorld = "world";
 
     @Override
     public void onEnable() {
@@ -65,6 +80,8 @@ public class ExtractionPlugin extends JavaPlugin {
         this.auctionManager = new AuctionManager(this, economyManager);
         this.cryptoManager = new CryptoManager(this, economyManager);
         this.resourcePackManager = new ResourcePackManager(this);
+        this.tradeManager = new TradeManager(this, economyManager);
+        this.temperatureManager = new TemperatureManager(this);
 
         registerCommands();
         registerListeners();
@@ -92,6 +109,9 @@ public class ExtractionPlugin extends JavaPlugin {
             new SetWorldCommand(this, extractManager)
         );
         getCommand("balance").setExecutor(new BalanceCommand(economyManager));
+        getCommand("setmoney").setExecutor(
+            new SetMoneyCommand(economyManager)
+        );
         getCommand("givemoney").setExecutor(
             new GiveMoneyCommand(economyManager)
         );
@@ -120,6 +140,18 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("resetstock").setExecutor(
             new ResetStockCommand(this, shopManager)
         );
+        getCommand("trade").setExecutor(
+            new TradeCommand(this, tradeManager)
+        );
+        getCommand("accepttrade").setExecutor(
+            new AcceptTradeCommand(this, tradeManager)
+        );
+        getCommand("declinetrade").setExecutor(
+            new DeclineTradeCommand(this, tradeManager)
+        );
+        getCommand("tempevent").setExecutor(
+            new TempEventCommand(this, temperatureManager)
+        );
     }
 
     private void registerListeners() {
@@ -145,6 +177,10 @@ public class ExtractionPlugin extends JavaPlugin {
             .getPluginManager()
             .registerEvents(levelingManager, this);
         getServer().getPluginManager().registerEvents(new com.extraction.listeners.WeaponListener(this), this);
+        getServer().getPluginManager().registerEvents(new TradeListener(this, tradeManager), this);
+        getServer().getPluginManager().registerEvents(new ProximityChatListener(this), this);
+        getServer().getPluginManager().registerEvents(new FishingListener(this), this);
+        getServer().getPluginManager().registerEvents(new TemperatureListener(this, temperatureManager), this);
     }
 
     public LootContainerManager getLootContainerManager() {
@@ -189,5 +225,13 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public ResourcePackManager getResourcePackManager() {
         return resourcePackManager;
+    }
+
+    public TradeManager getTradeManager() {
+        return tradeManager;
+    }
+
+    public TemperatureManager getTemperatureManager() {
+        return temperatureManager;
     }
 }

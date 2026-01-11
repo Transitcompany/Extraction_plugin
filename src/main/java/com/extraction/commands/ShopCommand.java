@@ -162,7 +162,7 @@ public class ShopCommand implements CommandExecutor, Listener {
         gui.setItem(HEADER_INFO_SLOT, headerInfo);
 
         // 3. Welcome Banner (Row 2: Slot 13 - Center)
-        int balance = (int) economyManager.getBalance(player.getUniqueId());
+        int balance = (int) economyManager.getBalanceAsDouble(player.getUniqueId());
         ItemStack welcomeBanner = createGuiItem(
             Material.BOOK,
             ChatColor.AQUA +
@@ -402,7 +402,7 @@ public class ShopCommand implements CommandExecutor, Listener {
         gui.setItem(INFO_ICON_SLOT, infoIcon);
 
         // Info item showing balance (slot 49 - Center Bottom Row)
-        int balance = (int) economyManager.getBalance(player.getUniqueId());
+        int balance = (int) economyManager.getBalanceAsDouble(player.getUniqueId());
         ItemStack balanceItem = createGuiItem(
             Material.GOLD_INGOT,
             ChatColor.GOLD + "" + ChatColor.BOLD + "Your Balance",
@@ -650,7 +650,7 @@ public class ShopCommand implements CommandExecutor, Listener {
                 openCategoryShop(player, state.category, state.page);
             }
         } else {
-            int balance = (int) economyManager.getBalance(player.getUniqueId());
+        int balance = (int) economyManager.getBalanceAsDouble(player.getUniqueId());
             player.sendMessage(
                 ChatColor.RED +
                     "Not enough money! Need $" +
