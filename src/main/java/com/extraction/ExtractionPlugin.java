@@ -7,7 +7,6 @@ import com.extraction.commands.DeclineTradeCommand;
 import com.extraction.commands.GiveMoneyCommand;
 import com.extraction.commands.ResetStockCommand;
 import com.extraction.commands.SetMoneyCommand;
-import com.extraction.commands.TempEventCommand;
 import com.extraction.commands.TradeCommand;
 import com.extraction.crypto.CryptoManager;
 import com.extraction.resources.ResourcePackManager;
@@ -36,9 +35,7 @@ import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
 import com.extraction.listeners.FishingListener;
 import com.extraction.listeners.ProximityChatListener;
-import com.extraction.listeners.TemperatureListener;
 import com.extraction.listeners.TradeListener;
-import com.extraction.managers.TemperatureManager;
 import com.extraction.managers.TradeManager;
 import com.extraction.loot.LootContainerManager;
 import com.extraction.loot.LootTableManager;
@@ -60,7 +57,6 @@ public class ExtractionPlugin extends JavaPlugin {
     private CryptoManager cryptoManager;
     private ResourcePackManager resourcePackManager;
     private TradeManager tradeManager;
-    private TemperatureManager temperatureManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -81,7 +77,6 @@ public class ExtractionPlugin extends JavaPlugin {
         this.cryptoManager = new CryptoManager(this, economyManager);
         this.resourcePackManager = new ResourcePackManager(this);
         this.tradeManager = new TradeManager(this, economyManager);
-        this.temperatureManager = new TemperatureManager(this);
 
         registerCommands();
         registerListeners();
@@ -149,9 +144,7 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("declinetrade").setExecutor(
             new DeclineTradeCommand(this, tradeManager)
         );
-        getCommand("tempevent").setExecutor(
-            new TempEventCommand(this, temperatureManager)
-        );
+
     }
 
     private void registerListeners() {
@@ -180,7 +173,7 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TradeListener(this, tradeManager), this);
         getServer().getPluginManager().registerEvents(new ProximityChatListener(this), this);
         getServer().getPluginManager().registerEvents(new FishingListener(this), this);
-        getServer().getPluginManager().registerEvents(new TemperatureListener(this, temperatureManager), this);
+        // temperature subsystem removed
     }
 
     public LootContainerManager getLootContainerManager() {
@@ -229,9 +222,5 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public TradeManager getTradeManager() {
         return tradeManager;
-    }
-
-    public TemperatureManager getTemperatureManager() {
-        return temperatureManager;
     }
 }

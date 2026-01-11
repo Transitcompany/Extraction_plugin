@@ -19,7 +19,6 @@ com\extraction\commands\ExtractPointCommand.class
 com\extraction\commands\BalanceCommand.class
 com\extraction\loot\LootTableManager.class
 com\extraction\commands\LootChestSetCommand$3$1.class
-com\extraction\commands\TempEventCommand.class
 com\extraction\commands\ProfileCommand.class
 com\extraction\listeners\CryptoWalletListener.class
 com\extraction\resources\ResourcePackManager.class
@@ -42,7 +41,6 @@ com\extraction\leveling\LevelingManager.class
 com\extraction\listeners\CustomItemListener$5.class
 com\extraction\listeners\DeathListener.class
 com\extraction\commands\LootChestSetCommand$3.class
-com\extraction\managers\TemperatureManager$1.class
 com\extraction\crypto\CryptoManager.class
 com\extraction\listeners\CustomItemListener$4.class
 com\extraction\commands\ResetStockCommand.class
@@ -52,7 +50,6 @@ com\extraction\listeners\WeaponListener$2.class
 com\extraction\extract\ExtractManager$3.class
 com\extraction\listeners\ProximityChatListener.class
 com\extraction\commands\AcceptTradeCommand.class
-com\extraction\listeners\TemperatureListener.class
 com\extraction\commands\ShopCommand.class
 com\extraction\listeners\CustomItemListener$1.class
 com\extraction\listeners\WeaponListener.class
@@ -71,6 +68,5 @@ com\extraction\crypto\CryptoManager$CryptoCurrency.class
 com\extraction\loot\LootTableManager$LootEntry.class
 com\extraction\commands\SetExtractToPointCommand.class
 com\extraction\commands\TradeCommand.class
-com\extraction\managers\TemperatureManager.class
 com\extraction\auction\AuctionManager.class
 com\extraction\listeners\FishingListener.class
