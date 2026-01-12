@@ -12,6 +12,9 @@ import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -20,6 +23,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 public class JoinLeaveListener implements Listener {
+
+    private static final NamespacedKey ownerKey = new NamespacedKey("extraction", "owner");
+    private static final NamespacedKey creationDateKey = new NamespacedKey("extraction", "creation_date");
 
     private final ExtractManager extractManager;
 
@@ -62,10 +68,13 @@ public class JoinLeaveListener implements Listener {
         bootsMeta.setTrim(new ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.TIDE));
         bootsMeta.setDisplayName(ChatColor.GOLD + "Starter Boots");
         bootsMeta.setLore(Arrays.asList(
-            ChatColor.GRAY + "Starter Gear",
-            ChatColor.GRAY + "Created on: " + date,
-            ChatColor.GRAY + "Owned by: " + owner
+            ChatColor.AQUA + "Starter Gear",
+            ChatColor.AQUA + "Created on: " + date,
+            ChatColor.AQUA + "Owned by: " + owner
         ));
+        PersistentDataContainer bootsContainer = bootsMeta.getPersistentDataContainer();
+        bootsContainer.set(ownerKey, PersistentDataType.STRING, owner);
+        bootsContainer.set(creationDateKey, PersistentDataType.STRING, date);
         boots.setItemMeta(bootsMeta);
 
         // Leather leggings with Netherite Host trim
@@ -74,10 +83,13 @@ public class JoinLeaveListener implements Listener {
         leggingsMeta.setTrim(new ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.HOST));
         leggingsMeta.setDisplayName(ChatColor.GOLD + "Starter Leggings");
         leggingsMeta.setLore(Arrays.asList(
-            ChatColor.GRAY + "Starter Gear",
-            ChatColor.GRAY + "Created on: " + date,
-            ChatColor.GRAY + "Owned by: " + owner
+            ChatColor.AQUA + "Starter Gear",
+            ChatColor.AQUA + "Created on: " + date,
+            ChatColor.AQUA + "Owned by: " + owner
         ));
+        PersistentDataContainer leggingsContainer = leggingsMeta.getPersistentDataContainer();
+        leggingsContainer.set(ownerKey, PersistentDataType.STRING, owner);
+        leggingsContainer.set(creationDateKey, PersistentDataType.STRING, date);
         leggings.setItemMeta(leggingsMeta);
 
         // Stone tools
