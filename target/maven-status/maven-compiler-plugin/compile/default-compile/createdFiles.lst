@@ -38,6 +38,7 @@ com\extraction\managers\TradeManager$TradeOffer.class
 com\extraction\commands\LootChestSetCommand.class
 com\extraction\commands\SetMoneyCommand.class
 com\extraction\commands\DeclineTradeCommand.class
+com\extraction\commands\ValueCommand.class
 com\extraction\leveling\LevelingManager.class
 com\extraction\listeners\CustomItemListener$5.class
 com\extraction\listeners\DeathListener.class

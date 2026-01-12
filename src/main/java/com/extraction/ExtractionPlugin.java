@@ -19,6 +19,7 @@ import com.extraction.commands.LootChestSetCommand;
 import com.extraction.commands.ProfileCommand;
 import com.extraction.commands.ResetLootCommand;
 import com.extraction.commands.SellCommand;
+import com.extraction.commands.ValueCommand;
 import com.extraction.commands.SetExtractToPointCommand;
 import com.extraction.commands.SetWorldCommand;
 import com.extraction.commands.ShopCommand;
@@ -112,6 +113,7 @@ public class ExtractionPlugin extends JavaPlugin {
             new GiveMoneyCommand(economyManager)
         );
         getCommand("sell").setExecutor(new SellCommand(this, economyManager, levelingManager));
+        getCommand("value").setExecutor(new ValueCommand(this, economyManager, levelingManager));
         getCommand("setextracttopoint").setExecutor(
             new SetExtractToPointCommand(this, extractManager)
         );

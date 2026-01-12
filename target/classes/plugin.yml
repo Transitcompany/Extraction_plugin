@@ -44,6 +44,9 @@ commands:
   sell:
     description: Open the sell GUI
     usage: /sell
+  value:
+    description: Check the value of an item
+    usage: /value
   setextracttopoint:
     description: Set an extract-to point (max 30)
     usage: /setextracttopoint
