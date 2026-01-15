@@ -1,6 +1,7 @@
 package com.extraction.listeners;
 
 import com.extraction.ExtractionPlugin;
+import com.extraction.data.PlayerDataManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,11 +29,14 @@ public class ProximityChatListener implements Listener {
         // Cancel default chat
         event.setCancelled(true);
 
+        PlayerDataManager.PlayerData data = plugin.getPlayerDataManager().getPlayerData(sender);
+        String prefix = data.getRank().getPrefix();
+
         // Find players within 50 blocks
         boolean sentToSomeone = false;
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getWorld().equals(sender.getWorld()) && player.getLocation().distance(sender.getLocation()) <= 50) {
-                player.sendMessage(ChatColor.GRAY + "[" + sender.getName() + "] " + message);
+                player.sendMessage(ChatColor.GRAY + "[" + prefix + " " + sender.getName() + "] " + message);
                 sentToSomeone = true;
             }
         }

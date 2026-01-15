@@ -1,6 +1,9 @@
 package com.extraction.listeners;
 
+import com.extraction.ExtractionPlugin;
 import com.extraction.extract.ExtractManager;
+import com.extraction.data.PlayerDataManager;
+import com.extraction.data.PlayerDataManager.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,18 +30,23 @@ public class JoinLeaveListener implements Listener {
     private static final NamespacedKey ownerKey = new NamespacedKey("extraction", "owner");
     private static final NamespacedKey creationDateKey = new NamespacedKey("extraction", "creation_date");
 
+    private final ExtractionPlugin plugin;
     private final ExtractManager extractManager;
 
-    public JoinLeaveListener(ExtractManager extractManager) {
+    public JoinLeaveListener(ExtractionPlugin plugin, ExtractManager extractManager) {
+        this.plugin = plugin;
         this.extractManager = extractManager;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "+" + ChatColor.BLACK + "] " + ChatColor.AQUA + event.getPlayer().getName() + " joined");
+        PlayerDataManager.PlayerData data = plugin.getPlayerDataManager().getPlayerData(event.getPlayer());
+        String prefix = data.getRank().getPrefix();
+        event.setJoinMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "+" + ChatColor.BLACK + "] " + prefix + " " + ChatColor.AQUA + event.getPlayer().getName() + " joined");
         if (!event.getPlayer().hasPlayedBefore()) {
             giveStartingKit(event.getPlayer());
         }
+        plugin.assignPlayerToTeam(event.getPlayer());
 
         // Teleport back to lobby if rejoining in lobby world
         String lobbyWorld = extractManager.getLobbyWorld();
@@ -55,7 +63,9 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "-" + ChatColor.BLACK + "] " + ChatColor.AQUA + event.getPlayer().getName() + " left");
+        PlayerData data = plugin.getPlayerDataManager().getPlayerData(event.getPlayer());
+        String prefix = data.getRank().getPrefix();
+        event.setQuitMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "-" + ChatColor.BLACK + "] " + prefix + " " + ChatColor.AQUA + event.getPlayer().getName() + " left");
     }
 
     private void giveStartingKit(Player player) {

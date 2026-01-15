@@ -3,49 +3,55 @@ package com.extraction;
 import com.extraction.auction.AuctionManager;
 import com.extraction.commands.AcceptTradeCommand;
 import com.extraction.commands.AuctionCommand;
-import com.extraction.commands.DeclineTradeCommand;
-import com.extraction.commands.GiveMoneyCommand;
-
-import com.extraction.commands.SetMoneyCommand;
-import com.extraction.commands.TradeCommand;
-import com.extraction.crypto.CryptoManager;
-import com.extraction.resources.ResourcePackManager;
 import com.extraction.commands.BalanceCommand;
 import com.extraction.commands.ClaimDoorCommand;
+import com.extraction.commands.DeclineTradeCommand;
 import com.extraction.commands.ExtractGiveCommand;
 import com.extraction.commands.ExtractOutBannerCommand;
 import com.extraction.commands.ExtractPointCommand;
 import com.extraction.commands.GiveMoneyCommand;
+import com.extraction.commands.GiveRankCommand;
 import com.extraction.commands.LootChestSetCommand;
 import com.extraction.commands.ProfileCommand;
 import com.extraction.commands.ResetLootCommand;
 import com.extraction.commands.SellCommand;
-import com.extraction.commands.ValueCommand;
 import com.extraction.commands.SetExtractToPointCommand;
+import com.extraction.commands.SetMoneyCommand;
 import com.extraction.commands.SetWorldCommand;
-
 import com.extraction.commands.StashCommand;
+import com.extraction.commands.TradeCommand;
+import com.extraction.commands.ValueCommand;
 import com.extraction.commands.WipeCommand;
-import com.extraction.data.PlayerDataManager;
-import com.extraction.economy.EconomyManager;
+import com.extraction.crypto.CryptoManager;
+import com.extraction.resources.ResourcePackManager;
+import com.extraction.data.Rank;
+import com.extraction.data.PlayerDataManager.PlayerData;
+import com.extraction.loot.LootContainerManager;
+import com.extraction.loot.LootTableManager;
+import com.extraction.stash.StashManager;
 import com.extraction.extract.ExtractManager;
+import com.extraction.economy.EconomyManager;
+import com.extraction.auction.AuctionManager;
+import com.extraction.data.PlayerDataManager;
 import com.extraction.leveling.LevelingManager;
+import com.extraction.managers.TradeManager;
+import com.extraction.managers.DoorManager;
 import com.extraction.listeners.BannerListener;
 import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
-import com.extraction.listeners.DoorListener;
 import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
+import com.extraction.listeners.DoorListener;
 import com.extraction.listeners.FishingListener;
 import com.extraction.listeners.JoinLeaveListener;
 import com.extraction.listeners.ProximityChatListener;
 import com.extraction.listeners.TradeListener;
-import com.extraction.managers.DoorManager;
-import com.extraction.managers.TradeManager;
-import com.extraction.loot.LootContainerManager;
-import com.extraction.loot.LootTableManager;
-
-import com.extraction.stash.StashManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.CampfireRecipe;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ExtractionPlugin extends JavaPlugin {
@@ -84,6 +90,26 @@ public class ExtractionPlugin extends JavaPlugin {
         this.resourcePackManager = new ResourcePackManager(this);
         this.tradeManager = new TradeManager(this, economyManager);
         this.doorManager = new DoorManager(this);
+
+        // Add custom campfire recipe for rotten flesh to leather
+        CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
+            new NamespacedKey(this, "rotten_flesh_to_leather"),
+            new ItemStack(Material.LEATHER),
+            Material.ROTTEN_FLESH,
+            0.35f, // Experience
+            600 // Cook time in ticks (30 seconds)
+        );
+        Bukkit.addRecipe(rottenFleshRecipe);
+
+        // Add custom campfire recipe for bone to bone meal
+        CampfireRecipe boneRecipe = new CampfireRecipe(
+            new NamespacedKey(this, "bone_to_bone_meal"),
+            new ItemStack(Material.BONE_MEAL, 3), // 3 bone meal per bone
+            Material.BONE,
+            0.1f, // Experience
+            300 // Cook time in ticks (15 seconds)
+        );
+        Bukkit.addRecipe(boneRecipe);
 
         registerCommands();
         registerListeners();
@@ -150,6 +176,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("claimdoor").setExecutor(
             new ClaimDoorCommand(this, doorManager)
         );
+        getCommand("giverank").setExecutor(
+            new GiveRankCommand(this)
+        );
 
     }
 
@@ -171,11 +200,19 @@ public class ExtractionPlugin extends JavaPlugin {
             .registerEvents(new FishingListener(this), this);
         getServer()
             .getPluginManager()
-            .registerEvents(new JoinLeaveListener(extractManager), this);
+            .registerEvents(new JoinLeaveListener(this, extractManager), this);
         getServer()
             .getPluginManager()
             .registerEvents(new DoorListener(this, doorManager), this);
         // temperature subsystem removed
+    }
+
+    public void assignPlayerToTeam(Player player) {
+        PlayerDataManager.PlayerData data = playerDataManager.getPlayerData(player);
+        String prefix = data.getRank().getPrefix();
+        String command = "tab player " + player.getName() + " tabprefix " + prefix.replace("§", "&");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        player.setPlayerListName(prefix + " " + player.getName());
     }
 
     public LootContainerManager getLootContainerManager() {

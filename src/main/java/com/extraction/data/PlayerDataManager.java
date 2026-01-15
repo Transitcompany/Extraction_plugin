@@ -79,6 +79,7 @@ public class PlayerDataManager {
 
     public static class PlayerData {
         private final UUID uuid;
+        private Rank rank;
         private int level;
         private double xp;
         private double totalXp;
@@ -100,6 +101,7 @@ public class PlayerDataManager {
 
         public PlayerData(UUID uuid) {
             this.uuid = uuid;
+            this.rank = Rank.P;
             this.level = 1;
             this.xp = 0;
             this.totalXp = 0;
@@ -149,7 +151,8 @@ public class PlayerDataManager {
 
         public void loadFromConfig(org.bukkit.configuration.ConfigurationSection section) {
             if (section == null) return;
-            
+
+            this.rank = Rank.valueOf(section.getString("rank", "P"));
             this.level = section.getInt("level", 1);
             this.xp = section.getDouble("xp", 0);
             this.totalXp = section.getDouble("totalXp", 0);
@@ -171,6 +174,7 @@ public class PlayerDataManager {
         }
 
         public void saveToConfig(org.bukkit.configuration.ConfigurationSection section) {
+            section.set("rank", rank.name());
             section.set("level", level);
             section.set("xp", xp);
             section.set("totalXp", totalXp);
@@ -193,6 +197,7 @@ public class PlayerDataManager {
 
         // Getters
         public UUID getUuid() { return uuid; }
+        public Rank getRank() { return rank; }
         public int getLevel() { return level; }
         public double getXp() { return xp; }
         public double getTotalXp() { return totalXp; }
@@ -213,6 +218,7 @@ public class PlayerDataManager {
         public int getDailyStreak() { return dailyStreak; }
 
         // Setters for tracking
+        public void setRank(Rank rank) { this.rank = rank; }
         public void incrementExtractionsCompleted() { this.extractionsCompleted++; }
         public void incrementItemsSold() { this.itemsSold++; }
         public void addMoneyEarned(double amount) { 
