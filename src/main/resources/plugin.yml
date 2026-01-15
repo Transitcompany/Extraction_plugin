@@ -12,9 +12,6 @@ commands:
     description: Force reset all loot
     usage: /resetloot
     permission: extraction.admin
-  shop:
-    description: Open the shop GUI
-    usage: /shop
   stash:
     description: Open your personal stash
     usage: /stash
@@ -58,17 +55,12 @@ commands:
   auction:
     description: Open the auction house
     usage: /auction [sell <price>|browse|my|collect]
-
   profile:
     description: View player profile and stats
     usage: /profile [player]
   wipe:
     description: Wipe all player data (admin only)
     usage: /wipe <player>
-    permission: extraction.admin
-  resetstock:
-    description: Reset shop stock
-    usage: /resetstock
     permission: extraction.admin
   disableresourcepack:
     description: Toggle resource pack enforcement
@@ -87,3 +79,6 @@ commands:
     description: Trigger temperature events
     usage: /tempevent <heatwave|cold|end>
     permission: extraction.admin
+  claimdoor:
+    description: Claim a door for protection
+    usage: /claimdoor

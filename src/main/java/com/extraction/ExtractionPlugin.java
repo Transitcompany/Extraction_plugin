@@ -5,12 +5,13 @@ import com.extraction.commands.AcceptTradeCommand;
 import com.extraction.commands.AuctionCommand;
 import com.extraction.commands.DeclineTradeCommand;
 import com.extraction.commands.GiveMoneyCommand;
-import com.extraction.commands.ResetStockCommand;
+
 import com.extraction.commands.SetMoneyCommand;
 import com.extraction.commands.TradeCommand;
 import com.extraction.crypto.CryptoManager;
 import com.extraction.resources.ResourcePackManager;
 import com.extraction.commands.BalanceCommand;
+import com.extraction.commands.ClaimDoorCommand;
 import com.extraction.commands.ExtractGiveCommand;
 import com.extraction.commands.ExtractOutBannerCommand;
 import com.extraction.commands.ExtractPointCommand;
@@ -22,7 +23,7 @@ import com.extraction.commands.SellCommand;
 import com.extraction.commands.ValueCommand;
 import com.extraction.commands.SetExtractToPointCommand;
 import com.extraction.commands.SetWorldCommand;
-import com.extraction.commands.ShopCommand;
+
 import com.extraction.commands.StashCommand;
 import com.extraction.commands.WipeCommand;
 import com.extraction.data.PlayerDataManager;
@@ -32,16 +33,18 @@ import com.extraction.leveling.LevelingManager;
 import com.extraction.listeners.BannerListener;
 import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
+import com.extraction.listeners.DoorListener;
 import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
 import com.extraction.listeners.FishingListener;
 import com.extraction.listeners.JoinLeaveListener;
 import com.extraction.listeners.ProximityChatListener;
 import com.extraction.listeners.TradeListener;
+import com.extraction.managers.DoorManager;
 import com.extraction.managers.TradeManager;
 import com.extraction.loot.LootContainerManager;
 import com.extraction.loot.LootTableManager;
-import com.extraction.shop.ShopManager;
+
 import com.extraction.stash.StashManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,7 +53,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private LootContainerManager lootContainerManager;
     private LootTableManager lootTableManager;
     private StashManager stashManager;
-    private ShopManager shopManager;
+
     private ExtractManager extractManager;
     private EconomyManager economyManager;
     private AuctionManager auctionManager;
@@ -59,6 +62,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private CryptoManager cryptoManager;
     private ResourcePackManager resourcePackManager;
     private TradeManager tradeManager;
+    private DoorManager doorManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -73,12 +77,13 @@ public class ExtractionPlugin extends JavaPlugin {
         );
         this.economyManager = new EconomyManager(this);
         this.stashManager = new StashManager(this);
-        this.shopManager = new ShopManager(this, economyManager);
+
         this.extractManager = new ExtractManager(this, levelingManager);
         this.auctionManager = new AuctionManager(this, economyManager);
         this.cryptoManager = new CryptoManager(this, economyManager);
         this.resourcePackManager = new ResourcePackManager(this);
         this.tradeManager = new TradeManager(this, economyManager);
+        this.doorManager = new DoorManager(this);
 
         registerCommands();
         registerListeners();
@@ -92,9 +97,7 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("resetloot").setExecutor(
             new ResetLootCommand(this, lootContainerManager)
         );
-        getCommand("shop").setExecutor(
-            new ShopCommand(this, shopManager, economyManager)
-        );
+
         getCommand("stash").setExecutor(new StashCommand(this, stashManager));
         getCommand("extractpoint").setExecutor(
             new ExtractPointCommand(this, extractManager)
@@ -119,8 +122,7 @@ public class ExtractionPlugin extends JavaPlugin {
         );
 
         ExtractGiveCommand extractGiveCommand = new ExtractGiveCommand(
-            this,
-            shopManager
+            this
         );
         getCommand("extractgive").setExecutor(extractGiveCommand);
         getCommand("extractgive").setTabCompleter(extractGiveCommand);
@@ -135,9 +137,7 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("wipe").setExecutor(
             new WipeCommand(this, playerDataManager, economyManager, stashManager)
         );
-        getCommand("resetstock").setExecutor(
-            new ResetStockCommand(this, shopManager)
-        );
+
         getCommand("trade").setExecutor(
             new TradeCommand(this, tradeManager)
         );
@@ -146,6 +146,9 @@ public class ExtractionPlugin extends JavaPlugin {
         );
         getCommand("declinetrade").setExecutor(
             new DeclineTradeCommand(this, tradeManager)
+        );
+        getCommand("claimdoor").setExecutor(
+            new ClaimDoorCommand(this, doorManager)
         );
 
     }
@@ -169,6 +172,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer()
             .getPluginManager()
             .registerEvents(new JoinLeaveListener(extractManager), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new DoorListener(this, doorManager), this);
         // temperature subsystem removed
     }
 
@@ -180,9 +186,7 @@ public class ExtractionPlugin extends JavaPlugin {
         return stashManager;
     }
 
-    public ShopManager getShopManager() {
-        return shopManager;
-    }
+
 
     public ExtractManager getExtractManager() {
         return extractManager;
@@ -218,5 +222,9 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public TradeManager getTradeManager() {
         return tradeManager;
+    }
+
+    public DoorManager getDoorManager() {
+        return doorManager;
     }
 }

@@ -1,15 +1,19 @@
 package com.extraction.commands;
 
 import com.extraction.ExtractionPlugin;
-import com.extraction.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,12 +22,10 @@ import java.util.List;
 public class ExtractGiveCommand implements CommandExecutor, TabCompleter {
 
     private final ExtractionPlugin plugin;
-    private final ShopManager shopManager;
     private final List<String> itemTypes = Arrays.asList("banner", "flare", "teleporter");
 
-    public ExtractGiveCommand(ExtractionPlugin plugin, ShopManager shopManager) {
+    public ExtractGiveCommand(ExtractionPlugin plugin) {
         this.plugin = plugin;
-        this.shopManager = shopManager;
     }
 
     @Override
@@ -67,15 +69,15 @@ public class ExtractGiveCommand implements CommandExecutor, TabCompleter {
 
         switch (itemType) {
             case "banner":
-                item = shopManager.createExtractionBanner();
+                item = createExtractionBanner();
                 itemName = "Easy Extraction Banner";
                 break;
             case "flare":
-                item = shopManager.createExtractionFlare();
+                item = createExtractionFlare();
                 itemName = "Extraction Flare";
                 break;
             case "teleporter":
-                item = shopManager.createEmergencyTeleporter();
+                item = createEmergencyTeleporter();
                 itemName = "Emergency Teleporter";
                 break;
             default:
@@ -118,5 +120,72 @@ public class ExtractGiveCommand implements CommandExecutor, TabCompleter {
         }
 
         return completions;
+    }
+
+    public ItemStack createExtractionBanner() {
+        ItemStack banner = new ItemStack(Material.WHITE_BANNER);
+        ItemMeta meta = banner.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.GREEN + "Easy Extraction Banner");
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Place and break to extract!");
+            lore.add(ChatColor.GRAY + "Works anywhere on the map!");
+            lore.add("");
+            lore.add(ChatColor.GOLD + "Sells for: $40,000");
+            meta.setLore(lore);
+            PersistentDataContainer container =
+                meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(plugin, "extraction_banner");
+            container.set(key, PersistentDataType.BYTE, (byte) 1);
+            banner.setItemMeta(meta);
+        }
+        return banner;
+    }
+
+    public ItemStack createExtractionFlare() {
+        ItemStack flare = new ItemStack(Material.BLAZE_ROD);
+        ItemMeta meta = flare.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.GOLD + "Extraction Flare");
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Right-click to signal extraction!");
+            lore.add(ChatColor.GRAY + "Faster extraction (10 seconds)");
+            lore.add(ChatColor.GRAY + "Works anywhere on the map!");
+            lore.add("");
+            lore.add(ChatColor.GOLD + "Sells for: $50,000");
+            meta.setLore(lore);
+            PersistentDataContainer container =
+                meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(plugin, "extraction_flare");
+            container.set(key, PersistentDataType.BYTE, (byte) 1);
+            flare.setItemMeta(meta);
+        }
+        return flare;
+    }
+
+    public ItemStack createEmergencyTeleporter() {
+        ItemStack teleporter = new ItemStack(Material.ENDER_EYE);
+        ItemMeta meta = teleporter.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(
+                ChatColor.LIGHT_PURPLE + "Emergency Teleporter"
+            );
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Right-click for INSTANT extraction!");
+            lore.add(ChatColor.GRAY + "No waiting, immediate teleport!");
+            lore.add(ChatColor.GRAY + "Works anywhere on the map!");
+            lore.add("");
+            lore.add(ChatColor.GOLD + "Sells for: $30,000S");
+            meta.setLore(lore);
+            PersistentDataContainer container =
+                meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(
+                plugin,
+                "emergency_teleporter"
+            );
+            container.set(key, PersistentDataType.BYTE, (byte) 1);
+            teleporter.setItemMeta(meta);
+        }
+        return teleporter;
     }
 }

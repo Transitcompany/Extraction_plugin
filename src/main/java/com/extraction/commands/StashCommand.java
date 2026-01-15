@@ -41,7 +41,7 @@ public class StashCommand implements CommandExecutor, Listener {
 
     // Button Slots
     private static final int INFO_SLOT = 46;
-    private static final int SHOP_SLOT = 47;
+
     private static final int STATS_SLOT = 49;
     private static final int SELL_SLOT = 51;
     private static final int EXIT_SLOT = 52;
@@ -118,14 +118,7 @@ public class StashCommand implements CommandExecutor, Listener {
         );
         displayInv.setItem(INFO_SLOT, infoIcon);
 
-        // Open Shop Button (Slot 47)
-        ItemStack shopButton = createGuiItem(
-            Material.NETHER_STAR,
-            ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Open Shop",
-            ChatColor.GRAY + "View items for purchase.",
-            ChatColor.YELLOW + "Click to execute /shop"
-        );
-        displayInv.setItem(SHOP_SLOT, shopButton);
+
 
         // Stash Stats/Usage (Slot 49 - Center)
         int usedSlots = 0;
@@ -209,11 +202,7 @@ public class StashCommand implements CommandExecutor, Listener {
             Player player = (Player) event.getWhoClicked();
 
             // Handle specific button clicks
-            if (rawSlot == SHOP_SLOT) {
-                player.closeInventory();
-                Bukkit.dispatchCommand(player, "shop");
-                player.sendMessage(ChatColor.YELLOW + "Opening the Shop...");
-            } else if (rawSlot == SELL_SLOT) {
+            if (rawSlot == SELL_SLOT) {
                 player.closeInventory();
                 Bukkit.dispatchCommand(player, "sell");
                 player.sendMessage(
