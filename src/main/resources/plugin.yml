@@ -85,3 +85,6 @@ commands:
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>
+  team:
+    description: Manage teams
+    usage: /team <create|invite|accept|leave|chat|stash>

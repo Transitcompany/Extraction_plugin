@@ -98,6 +98,8 @@ public class PlayerDataManager {
         private long lastSeen;
         private long lastDailyReward;
         private int dailyStreak;
+        private String teamName;
+        private boolean teamChatEnabled;
 
         public PlayerData(UUID uuid) {
             this.uuid = uuid;
@@ -116,10 +118,12 @@ public class PlayerDataManager {
             this.killStreak = 0;
             this.highestKillStreak = 0;
             this.monstersKilled = 0;
-            this.firstJoin = System.currentTimeMillis();
-            this.lastSeen = System.currentTimeMillis();
-            this.lastDailyReward = 0;
-            this.dailyStreak = 0;
+             this.firstJoin = System.currentTimeMillis();
+             this.lastSeen = System.currentTimeMillis();
+             this.lastDailyReward = 0;
+             this.dailyStreak = 0;
+             this.teamName = null;
+             this.teamChatEnabled = false;
         }
 
         public void addXp(double amount) {
@@ -167,10 +171,12 @@ public class PlayerDataManager {
             this.killStreak = section.getInt("killStreak", 0);
             this.highestKillStreak = section.getInt("highestKillStreak", 0);
             this.monstersKilled = section.getInt("monstersKilled", 0);
-            this.firstJoin = section.getLong("firstJoin", System.currentTimeMillis());
-            this.lastSeen = section.getLong("lastSeen", System.currentTimeMillis());
-            this.lastDailyReward = section.getLong("lastDailyReward", 0);
-            this.dailyStreak = section.getInt("dailyStreak", 0);
+             this.firstJoin = section.getLong("firstJoin", System.currentTimeMillis());
+             this.lastSeen = section.getLong("lastSeen", System.currentTimeMillis());
+             this.lastDailyReward = section.getLong("lastDailyReward", 0);
+             this.dailyStreak = section.getInt("dailyStreak", 0);
+             this.teamName = section.getString("teamName", null);
+             this.teamChatEnabled = section.getBoolean("teamChatEnabled", false);
         }
 
         public void saveToConfig(org.bukkit.configuration.ConfigurationSection section) {
@@ -189,10 +195,12 @@ public class PlayerDataManager {
             section.set("killStreak", killStreak);
             section.set("highestKillStreak", highestKillStreak);
             section.set("monstersKilled", monstersKilled);
-            section.set("firstJoin", firstJoin);
-            section.set("lastSeen", lastSeen);
-            section.set("lastDailyReward", lastDailyReward);
-            section.set("dailyStreak", dailyStreak);
+             section.set("firstJoin", firstJoin);
+             section.set("lastSeen", lastSeen);
+             section.set("lastDailyReward", lastDailyReward);
+             section.set("dailyStreak", dailyStreak);
+             section.set("teamName", teamName);
+             section.set("teamChatEnabled", teamChatEnabled);
         }
 
         // Getters
@@ -214,8 +222,12 @@ public class PlayerDataManager {
         public int getMonstersKilled() { return monstersKilled; }
         public long getFirstJoin() { return firstJoin; }
         public long getLastSeen() { return lastSeen; }
-        public long getLastDailyReward() { return lastDailyReward; }
-        public int getDailyStreak() { return dailyStreak; }
+         public long getLastDailyReward() { return lastDailyReward; }
+         public int getDailyStreak() { return dailyStreak; }
+         public String getTeamName() { return teamName; }
+         public void setTeamName(String teamName) { this.teamName = teamName; }
+         public boolean isTeamChatEnabled() { return teamChatEnabled; }
+         public void setTeamChatEnabled(boolean teamChatEnabled) { this.teamChatEnabled = teamChatEnabled; }
 
         // Setters for tracking
         public void setRank(Rank rank) { this.rank = rank; }

@@ -19,6 +19,7 @@ import com.extraction.commands.SetExtractToPointCommand;
 import com.extraction.commands.SetMoneyCommand;
 import com.extraction.commands.SetWorldCommand;
 import com.extraction.commands.StashCommand;
+import com.extraction.commands.TeamCommand;
 import com.extraction.commands.TradeCommand;
 import com.extraction.commands.ValueCommand;
 import com.extraction.commands.WipeCommand;
@@ -36,6 +37,8 @@ import com.extraction.data.PlayerDataManager;
 import com.extraction.leveling.LevelingManager;
 import com.extraction.managers.TradeManager;
 import com.extraction.managers.DoorManager;
+import com.extraction.managers.TeamManager;
+import com.extraction.placeholders.BalancePlaceholder;
 import com.extraction.listeners.BannerListener;
 import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
@@ -69,6 +72,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private ResourcePackManager resourcePackManager;
     private TradeManager tradeManager;
     private DoorManager doorManager;
+    private TeamManager teamManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -87,9 +91,10 @@ public class ExtractionPlugin extends JavaPlugin {
         this.extractManager = new ExtractManager(this, levelingManager);
         this.auctionManager = new AuctionManager(this, economyManager);
         this.cryptoManager = new CryptoManager(this, economyManager);
-        this.resourcePackManager = new ResourcePackManager(this);
-        this.tradeManager = new TradeManager(this, economyManager);
-        this.doorManager = new DoorManager(this);
+         this.resourcePackManager = new ResourcePackManager(this);
+         this.tradeManager = new TradeManager(this, economyManager);
+         this.doorManager = new DoorManager(this);
+         this.teamManager = new TeamManager();
 
         // Add custom campfire recipe for rotten flesh to leather
         CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
@@ -113,6 +118,13 @@ public class ExtractionPlugin extends JavaPlugin {
 
         registerCommands();
         registerListeners();
+
+        // Register PlaceholderAPI expansion if present
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new BalancePlaceholder(this).register();
+            getLogger().info("Registered %Vbalance% placeholder with PlaceholderAPI.");
+        }
+
         getLogger().info("Extraction plugin enabled!");
     }
 
@@ -178,6 +190,9 @@ public class ExtractionPlugin extends JavaPlugin {
         );
         getCommand("giverank").setExecutor(
             new GiveRankCommand(this)
+        );
+        getCommand("team").setExecutor(
+            new TeamCommand(this)
         );
 
     }
@@ -259,6 +274,10 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public TradeManager getTradeManager() {
         return tradeManager;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
     }
 
     public DoorManager getDoorManager() {

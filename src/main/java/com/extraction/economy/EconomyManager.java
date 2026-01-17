@@ -70,6 +70,42 @@ public class EconomyManager {
             return 0.0;
         }
     }
+
+    public String formatBalance(UUID uuid) {
+        double balance = getBalanceAsDouble(uuid);
+        return formatNumber(balance);
+    }
+
+    private String formatNumber(double number) {
+        if (number < 1000) {
+            if (number % 1 == 0) {
+                return String.valueOf((int) number);
+            } else {
+                return String.format("%.2f", number);
+            }
+        }
+
+        String[] suffixes = {"k", "m", "b", "t", "q", "Q", "s", "S", "o", "n", "d", "U", "D", "T", "Qt", "Qd", "Sd", "St", "O", "N", "v", "c"};
+        int exponent = 0;
+
+        while (number / Math.pow(1000, exponent + 1) >= 1 && exponent < suffixes.length - 1) {
+            exponent++;
+        }
+
+        double temp = number / Math.pow(1000, exponent);
+
+        if (exponent >= suffixes.length) {
+            return String.format("%.1e", number);
+        }
+
+        String suffix = exponent == 0 ? "" : suffixes[exponent - 1];
+
+        if (temp % 1 == 0) {
+            return (int) temp + suffix;
+        } else {
+            return String.format("%.1f", temp) + suffix;
+        }
+    }
 }
 
 
