@@ -4,6 +4,7 @@ import com.extraction.auction.AuctionManager;
 import com.extraction.commands.AcceptTradeCommand;
 import com.extraction.commands.AuctionCommand;
 import com.extraction.commands.BalanceCommand;
+import com.extraction.commands.ClaimChestCommand;
 import com.extraction.commands.ClaimDoorCommand;
 import com.extraction.commands.DeclineTradeCommand;
 import com.extraction.commands.ExtractGiveCommand;
@@ -36,6 +37,7 @@ import com.extraction.auction.AuctionManager;
 import com.extraction.data.PlayerDataManager;
 import com.extraction.leveling.LevelingManager;
 import com.extraction.managers.TradeManager;
+import com.extraction.managers.ChestManager;
 import com.extraction.managers.DoorManager;
 import com.extraction.managers.TeamManager;
 import com.extraction.managers.FirstTimeJoinManager;
@@ -43,6 +45,7 @@ import com.extraction.managers.ChatModerationManager;
 import com.extraction.placeholders.BalancePlaceholder;
 import com.extraction.placeholders.TeamPlaceholder;
 import com.extraction.listeners.BannerListener;
+import com.extraction.listeners.ChestListener;
 import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
 import com.extraction.listeners.CustomItemListener;
@@ -75,6 +78,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private CryptoManager cryptoManager;
     private ResourcePackManager resourcePackManager;
     private TradeManager tradeManager;
+    private ChestManager chestManager;
     private DoorManager doorManager;
     private TeamManager teamManager;
     private FirstTimeJoinManager firstTimeJoinManager;
@@ -99,6 +103,7 @@ public class ExtractionPlugin extends JavaPlugin {
         this.cryptoManager = new CryptoManager(this, economyManager);
          this.resourcePackManager = new ResourcePackManager(this);
            this.tradeManager = new TradeManager(this, economyManager);
+           this.chestManager = new ChestManager(this);
            this.doorManager = new DoorManager(this);
            this.teamManager = new TeamManager();
            this.firstTimeJoinManager = new FirstTimeJoinManager(this);
@@ -197,6 +202,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("claimdoor").setExecutor(
             new ClaimDoorCommand(this, doorManager)
         );
+        getCommand("claimchest").setExecutor(
+            new ClaimChestCommand(this, chestManager)
+        );
         getCommand("giverank").setExecutor(
             new GiveRankCommand(this)
         );
@@ -225,6 +233,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer()
             .getPluginManager()
             .registerEvents(new JoinLeaveListener(this, extractManager), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new ChestListener(this, chestManager), this);
         getServer()
             .getPluginManager()
             .registerEvents(new DoorListener(this, doorManager), this);
@@ -290,6 +301,10 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public TeamManager getTeamManager() {
         return teamManager;
+    }
+
+    public ChestManager getChestManager() {
+        return chestManager;
     }
 
     public DoorManager getDoorManager() {

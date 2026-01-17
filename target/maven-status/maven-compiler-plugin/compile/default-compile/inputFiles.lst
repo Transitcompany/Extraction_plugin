@@ -48,7 +48,10 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ValueCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\WipeCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\BannerListener.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\ChestListener.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\ChestManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\ProximityChatListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetExtractToPointCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\ChatModerationManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\WeaponListener.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ClaimChestCommand.java

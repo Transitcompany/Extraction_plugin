@@ -82,6 +82,9 @@ commands:
   claimdoor:
     description: Claim a door for protection
     usage: /claimdoor
+  claimchest:
+    description: Claim a chest or barrel for protection
+    usage: /claimchest
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>
