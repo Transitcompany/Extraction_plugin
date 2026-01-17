@@ -17,9 +17,11 @@ import com.extraction.commands.ProfileCommand;
 import com.extraction.commands.ReportCommand;
 import com.extraction.commands.ResetLootCommand;
 import com.extraction.commands.SellCommand;
+import com.extraction.commands.ServerMapCommand;
 import com.extraction.commands.SetExtractToPointCommand;
 import com.extraction.commands.SetMoneyCommand;
 import com.extraction.commands.SetReportWebhookCommand;
+import com.extraction.commands.SetServerMapCommand;
 import com.extraction.commands.SetWorldCommand;
 import com.extraction.commands.StashCommand;
 import com.extraction.commands.TeamCommand;
@@ -45,6 +47,7 @@ import com.extraction.managers.TeamManager;
 import com.extraction.managers.FirstTimeJoinManager;
 import com.extraction.managers.ChatModerationManager;
 import com.extraction.managers.ReportManager;
+import com.extraction.managers.ServerMapManager;
 import com.extraction.placeholders.BalancePlaceholder;
 import com.extraction.placeholders.TeamPlaceholder;
 import com.extraction.listeners.BannerListener;
@@ -87,6 +90,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private FirstTimeJoinManager firstTimeJoinManager;
     private ChatModerationManager chatModerationManager;
     private ReportManager reportManager;
+    private ServerMapManager serverMapManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -113,6 +117,7 @@ public class ExtractionPlugin extends JavaPlugin {
            this.firstTimeJoinManager = new FirstTimeJoinManager(this);
            this.chatModerationManager = new ChatModerationManager(this);
            this.reportManager = new ReportManager(this);
+           this.serverMapManager = new ServerMapManager(this);
 
         // Add custom campfire recipe for rotten flesh to leather
         CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
@@ -215,6 +220,12 @@ public class ExtractionPlugin extends JavaPlugin {
         );
         getCommand("setreporthook").setExecutor(
             new SetReportWebhookCommand(this, reportManager)
+        );
+        getCommand("servermap").setExecutor(
+            new ServerMapCommand(this, serverMapManager)
+        );
+        getCommand("setservermap").setExecutor(
+            new SetServerMapCommand(this, serverMapManager)
         );
         getCommand("giverank").setExecutor(
             new GiveRankCommand(this)
@@ -332,5 +343,9 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public ReportManager getReportManager() {
         return reportManager;
+    }
+
+    public ServerMapManager getServerMapManager() {
+        return serverMapManager;
     }
 }

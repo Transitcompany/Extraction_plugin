@@ -92,6 +92,13 @@ commands:
     description: Set the Discord webhook for reports
     usage: /setreporthook <webhook_url>
     permission: extraction.admin
+  servermap:
+    description: Get a clickable link to the server map
+    usage: /servermap
+  setservermap:
+    description: Set the server map URL
+    usage: /setservermap <url>
+    permission: extraction.admin
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>

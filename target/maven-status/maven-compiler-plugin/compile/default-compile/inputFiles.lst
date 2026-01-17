@@ -24,6 +24,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetReportWebhookCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\FirstTimeJoinManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\resources\ResourcePackManager.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ServerMapCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\TeamManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\TradeListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\DeathListener.java
@@ -34,6 +35,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SellCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExtractGiveCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\crypto\CryptoManager.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetServerMapCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\TeamCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\JoinLeaveListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\AuctionCommand.java
@@ -50,6 +52,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\l
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\BalanceCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ValueCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\WipeCommand.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\ServerMapManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\BannerListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\ChestListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\ChestManager.java

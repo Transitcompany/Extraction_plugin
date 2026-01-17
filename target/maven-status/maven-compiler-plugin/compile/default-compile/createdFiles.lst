@@ -49,6 +49,7 @@ com\extraction\listeners\CustomItemListener$3.class
 com\extraction\commands\ExtractGiveCommand.class
 com\extraction\crypto\CryptoManager$CryptoCurrency.class
 com\extraction\commands\SetExtractToPointCommand.class
+com\extraction\managers\ServerMapManager.class
 com\extraction\auction\AuctionManager.class
 com\extraction\listeners\FishingListener.class
 com\extraction\data\PlayerDataManager.class
@@ -82,8 +83,10 @@ com\extraction\managers\ChestManager.class
 com\extraction\commands\AcceptTradeCommand.class
 com\extraction\listeners\CustomItemListener$1.class
 com\extraction\listeners\WeaponListener.class
+com\extraction\commands\SetServerMapCommand.class
 com\extraction\auction\AuctionManager$1.class
 com\extraction\listeners\ChestListener.class
+com\extraction\commands\ServerMapCommand.class
 com\extraction\managers\DoorManager.class
 com\extraction\economy\EconomyManager.class
 com\extraction\listeners\FishingListener$1.class
