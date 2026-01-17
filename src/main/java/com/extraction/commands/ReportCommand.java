@@ -32,6 +32,12 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
+        if (reportManager.isOnCooldown(player.getUniqueId())) {
+            long remaining = reportManager.getRemainingCooldown(player.getUniqueId()) / 1000 / 60; // minutes
+            player.sendMessage(ChatColor.RED + "You can report again in " + remaining + " minutes.");
+            return true;
+        }
+
         String reported = args[0];
         StringBuilder reasonBuilder = new StringBuilder();
         for (int i = 1; i < args.length; i++) {
@@ -39,7 +45,7 @@ public class ReportCommand implements CommandExecutor {
         }
         String reason = reasonBuilder.toString().trim();
 
-        if (reportManager.sendReport(player.getName(), reported, reason)) {
+        if (reportManager.sendReport(player.getUniqueId(), player.getName(), reported, reason)) {
             player.sendMessage(ChatColor.GREEN + "Report sent successfully!");
         } else {
             player.sendMessage(ChatColor.RED + "Failed to send report. Webhook may not be set.");

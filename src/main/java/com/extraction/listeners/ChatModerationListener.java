@@ -6,8 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class ChatModerationListener implements Listener {
 
@@ -18,6 +16,14 @@ public class ChatModerationListener implements Listener {
         this.moderationManager = moderationManager;
         this.emojiMap = new HashMap<>();
         loadEmojis();
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        String message = event.getMessage();
+        String censored = moderationManager.censor(message);
+        String withEmojis = replaceEmojis(censored);
+        event.setMessage(withEmojis);
     }
 
     private void loadEmojis() {
@@ -43,14 +49,6 @@ public class ChatModerationListener implements Listener {
         emojiMap.put(":pray:", "🙏");
         emojiMap.put(":clap:", "👏");
         // Add more as needed
-    }
-
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        String message = event.getMessage();
-        String censored = moderationManager.censor(message);
-        String withEmojis = replaceEmojis(censored);
-        event.setMessage(withEmojis);
     }
 
     private String replaceEmojis(String message) {
