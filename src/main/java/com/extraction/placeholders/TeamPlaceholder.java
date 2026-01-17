@@ -5,17 +5,17 @@ import com.extraction.team.Team;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
-public class BalancePlaceholder extends PlaceholderExpansion {
+public class TeamPlaceholder extends PlaceholderExpansion {
 
     private final ExtractionPlugin plugin;
 
-    public BalancePlaceholder(ExtractionPlugin plugin) {
+    public TeamPlaceholder(ExtractionPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public String getIdentifier() {
-        return "Vbalance";
+        return "Extract_team";
     }
 
     @Override
@@ -36,11 +36,7 @@ public class BalancePlaceholder extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
         if (player == null) return "";
-        if (identifier.equals("balance")) {
-            String balance = plugin.getEconomyManager().formatBalance(player.getUniqueId());
-            return balance;
-        }
-        if (identifier.equals("Extract_team")) {
+        if (identifier == null) {
             Team team = plugin.getTeamManager().getPlayerTeam(player.getUniqueId());
             return team != null ? team.getName() : "None";
         }

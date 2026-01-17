@@ -19,6 +19,7 @@ com\extraction\commands\AuctionCommand.class
 com\extraction\commands\LootChestSetCommand$2.class
 com\extraction\commands\ExtractPointCommand.class
 com\extraction\commands\BalanceCommand.class
+com\extraction\managers\FirstTimeJoinManager.class
 com\extraction\loot\LootTableManager.class
 com\extraction\commands\LootChestSetCommand$3$1.class
 com\extraction\commands\ProfileCommand.class
@@ -40,6 +41,7 @@ com\extraction\commands\LootChestSetCommand.class
 com\extraction\commands\SetMoneyCommand.class
 com\extraction\commands\DeclineTradeCommand.class
 com\extraction\commands\ValueCommand.class
+com\extraction\placeholders\TeamPlaceholder.class
 com\extraction\leveling\LevelingManager.class
 com\extraction\listeners\CustomItemListener$5.class
 com\extraction\listeners\DeathListener.class

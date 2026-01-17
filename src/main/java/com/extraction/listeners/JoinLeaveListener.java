@@ -40,25 +40,50 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PlayerDataManager.PlayerData data = plugin.getPlayerDataManager().getPlayerData(event.getPlayer());
+        Player player = event.getPlayer();
+        PlayerDataManager.PlayerData data = plugin.getPlayerDataManager().getPlayerData(player);
         String prefix = data.getRank().getPrefix();
-        event.setJoinMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "+" + ChatColor.BLACK + "] " + prefix + " " + ChatColor.AQUA + event.getPlayer().getName() + " joined");
-        if (!event.getPlayer().hasPlayedBefore()) {
-            giveStartingKit(event.getPlayer());
-        }
-        plugin.assignPlayerToTeam(event.getPlayer());
+        event.setJoinMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "+" + ChatColor.BLACK + "] " + prefix + " " + ChatColor.AQUA + player.getName() + " joined");
 
-        // Teleport back to lobby if rejoining in lobby world
-        String lobbyWorld = extractManager.getLobbyWorld();
-        String extractWorld = extractManager.getExtractWorld();
-        if (lobbyWorld != null && event.getPlayer().getWorld().getName().equals(lobbyWorld)) {
-            World world = Bukkit.getWorld(lobbyWorld);
-            if (world != null) {
-                Location spawn = world.getSpawnLocation();
-                event.getPlayer().teleport(spawn);
+        boolean isFirstTime = plugin.getFirstTimeJoinManager().isFirstTimeJoin(player.getUniqueId());
+        if (isFirstTime) {
+            // Welcome message
+            String welcomeMessage = ChatColor.AQUA + "🌟 Welcome to VaultMC, " + ChatColor.GOLD + player.getName() + ChatColor.AQUA + "! 🌟\n" +
+                                    ChatColor.AQUA + "Have fun!";
+            player.sendMessage(welcomeMessage);
+
+            // Broadcast in chat
+            Bukkit.broadcastMessage(ChatColor.AQUA + "🎉 " + ChatColor.GOLD + player.getName() + ChatColor.AQUA + " has joined VaultMC for the first time! Welcome! 🎉");
+
+            // Give starting kit
+            giveStartingKit(player);
+
+            // Teleport to lobby world
+            String lobbyWorld = extractManager.getLobbyWorld();
+            if (lobbyWorld != null) {
+                World world = Bukkit.getWorld(lobbyWorld);
+                if (world != null) {
+                    Location spawn = world.getSpawnLocation();
+                    player.teleport(spawn);
+                }
+            }
+
+            // Mark as joined
+            plugin.getFirstTimeJoinManager().markJoined(player.getUniqueId(), player.getName());
+        } else {
+            // Teleport back to lobby if rejoining in lobby world
+            String lobbyWorld = extractManager.getLobbyWorld();
+            String extractWorld = extractManager.getExtractWorld();
+            if (lobbyWorld != null && player.getWorld().getName().equals(lobbyWorld)) {
+                World world = Bukkit.getWorld(lobbyWorld);
+                if (world != null) {
+                    Location spawn = world.getSpawnLocation();
+                    player.teleport(spawn);
+                }
             }
         }
-        // Do not teleport if in extraction world
+
+        plugin.assignPlayerToTeam(player);
     }
 
     @EventHandler

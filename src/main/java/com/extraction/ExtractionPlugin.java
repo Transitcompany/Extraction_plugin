@@ -38,7 +38,9 @@ import com.extraction.leveling.LevelingManager;
 import com.extraction.managers.TradeManager;
 import com.extraction.managers.DoorManager;
 import com.extraction.managers.TeamManager;
+import com.extraction.managers.FirstTimeJoinManager;
 import com.extraction.placeholders.BalancePlaceholder;
+import com.extraction.placeholders.TeamPlaceholder;
 import com.extraction.listeners.BannerListener;
 import com.extraction.listeners.ContainerListener;
 import com.extraction.listeners.CryptoWalletListener;
@@ -73,6 +75,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private TradeManager tradeManager;
     private DoorManager doorManager;
     private TeamManager teamManager;
+    private FirstTimeJoinManager firstTimeJoinManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -92,9 +95,10 @@ public class ExtractionPlugin extends JavaPlugin {
         this.auctionManager = new AuctionManager(this, economyManager);
         this.cryptoManager = new CryptoManager(this, economyManager);
          this.resourcePackManager = new ResourcePackManager(this);
-         this.tradeManager = new TradeManager(this, economyManager);
-         this.doorManager = new DoorManager(this);
-         this.teamManager = new TeamManager();
+          this.tradeManager = new TradeManager(this, economyManager);
+          this.doorManager = new DoorManager(this);
+          this.teamManager = new TeamManager();
+          this.firstTimeJoinManager = new FirstTimeJoinManager(this);
 
         // Add custom campfire recipe for rotten flesh to leather
         CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
@@ -122,7 +126,8 @@ public class ExtractionPlugin extends JavaPlugin {
         // Register PlaceholderAPI expansion if present
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new BalancePlaceholder(this).register();
-            getLogger().info("Registered %Vbalance% placeholder with PlaceholderAPI.");
+            new TeamPlaceholder(this).register();
+            getLogger().info("Registered %Vbalance% and %Extract_team% placeholders with PlaceholderAPI.");
         }
 
         getLogger().info("Extraction plugin enabled!");
@@ -282,5 +287,9 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public DoorManager getDoorManager() {
         return doorManager;
+    }
+
+    public FirstTimeJoinManager getFirstTimeJoinManager() {
+        return firstTimeJoinManager;
     }
 }
