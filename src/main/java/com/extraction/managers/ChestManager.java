@@ -42,6 +42,13 @@ public class ChestManager {
         if (isChestClaimed(location)) return false;
         ChestClaim claim = new ChestClaim(owner, 0);
         claimedChests.put(location, claim);
+        // If double chest, claim the other side too
+        if (isDoubleChest(location)) {
+            Location otherLocation = getOtherDoubleChestLocation(location);
+            if (otherLocation != null && !isChestClaimed(otherLocation)) {
+                claimedChests.put(otherLocation, new ChestClaim(owner, 0));
+            }
+        }
         saveClaimedChests();
         return true;
     }
@@ -66,6 +73,24 @@ public class ChestManager {
                 saveClaimedChests();
             }
         }
+    }
+
+    private Location getOtherDoubleChestLocation(Location location) {
+        Block block = location.getBlock();
+        if (block.getState() instanceof Chest) {
+            Chest chest = (Chest) block.getState();
+            if (chest.getInventory().getHolder() instanceof org.bukkit.block.DoubleChest) {
+                org.bukkit.block.DoubleChest doubleChest = (org.bukkit.block.DoubleChest) chest.getInventory().getHolder();
+                Location left = ((Chest) doubleChest.getLeftSide()).getLocation();
+                Location right = ((Chest) doubleChest.getRightSide()).getLocation();
+                if (location.equals(left)) {
+                    return right;
+                } else {
+                    return left;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean isDoubleChest(Location location) {

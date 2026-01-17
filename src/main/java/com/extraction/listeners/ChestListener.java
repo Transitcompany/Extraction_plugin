@@ -5,6 +5,7 @@ import com.extraction.managers.ChestManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -35,11 +36,25 @@ public class ChestListener implements Listener {
 
         Player player = event.getPlayer();
 
-        // Check if chest is claimed
-        if (chestManager.isChestClaimed(block.getLocation())) {
-            if (!chestManager.canPlayerAccessChest(player.getUniqueId(), block.getLocation())) {
-                event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "This chest is claimed by another player.");
+        if (block.getState() instanceof org.bukkit.block.Chest) {
+            org.bukkit.block.Chest chest = (org.bukkit.block.Chest) block.getState();
+            if (chest.getInventory().getHolder() instanceof org.bukkit.block.DoubleChest) {
+                // Double chest: check both sides
+                org.bukkit.block.DoubleChest dc = (org.bukkit.block.DoubleChest) chest.getInventory().getHolder();
+                Location left = ((org.bukkit.block.Chest) dc.getLeftSide()).getLocation();
+                Location right = ((org.bukkit.block.Chest) dc.getRightSide()).getLocation();
+                boolean canAccess = (!chestManager.isChestClaimed(left) || chestManager.canPlayerAccessChest(player.getUniqueId(), left)) &&
+                                    (!chestManager.isChestClaimed(right) || chestManager.canPlayerAccessChest(player.getUniqueId(), right));
+                if (!canAccess) {
+                    event.setCancelled(true);
+                    player.sendMessage(ChatColor.RED + "This chest is claimed by another player.");
+                }
+            } else {
+                // Single chest
+                if (chestManager.isChestClaimed(block.getLocation()) && !chestManager.canPlayerAccessChest(player.getUniqueId(), block.getLocation())) {
+                    event.setCancelled(true);
+                    player.sendMessage(ChatColor.RED + "This chest is claimed by another player.");
+                }
             }
         }
     }
