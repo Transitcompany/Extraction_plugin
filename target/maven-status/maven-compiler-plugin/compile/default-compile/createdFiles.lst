@@ -1,8 +1,10 @@
+com\extraction\managers\ReportManager.class
 com\extraction\auction\AuctionManager$AuctionListing.class
 com\extraction\commands\LootChestSetCommand$1.class
 com\extraction\listeners\ChatModerationListener.class
 com\extraction\listeners\JoinLeaveListener.class
 com\extraction\listeners\CustomItemListener.class
+com\extraction\commands\SetReportWebhookCommand.class
 com\extraction\listeners\CustomItemListener$6.class
 com\extraction\crypto\CryptoManager$CryptoWallet.class
 com\extraction\ExtractionPlugin.class
@@ -68,6 +70,7 @@ com\extraction\resources\ResourcePackManager.class
 com\extraction\commands\ResetLootCommand.class
 com\extraction\listeners\CustomItemListener$8.class
 com\extraction\data\Rank.class
+com\extraction\commands\ReportCommand.class
 com\extraction\extract\ExtractManager$2.class
 com\extraction\extract\ExtractManager.class
 com\extraction\leveling\LevelingManager.class

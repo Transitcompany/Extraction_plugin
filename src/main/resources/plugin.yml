@@ -85,6 +85,13 @@ commands:
   claimchest:
     description: Claim a chest or barrel for protection
     usage: /claimchest
+  report:
+    description: Report a player for misconduct
+    usage: /report <player> <reason>
+  setreporthook:
+    description: Set the Discord webhook for reports
+    usage: /setreporthook <webhook_url>
+    permission: extraction.admin
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>
