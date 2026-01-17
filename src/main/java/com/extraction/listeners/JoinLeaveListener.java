@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import java.time.LocalDate;
@@ -65,6 +66,7 @@ public class JoinLeaveListener implements Listener {
                 if (world != null) {
                     Location spawn = world.getSpawnLocation();
                     player.teleport(spawn);
+                    player.setFoodLevel(20); // Full hunger in lobby
                 }
             }
 
@@ -79,6 +81,7 @@ public class JoinLeaveListener implements Listener {
                 if (world != null) {
                     Location spawn = world.getSpawnLocation();
                     player.teleport(spawn);
+                    player.setFoodLevel(20); // Full hunger in lobby
                 }
             }
         }
@@ -91,6 +94,17 @@ public class JoinLeaveListener implements Listener {
         PlayerData data = plugin.getPlayerDataManager().getPlayerData(event.getPlayer());
         String prefix = data.getRank().getPrefix();
         event.setQuitMessage(ChatColor.BLACK + "[" + ChatColor.AQUA + "-" + ChatColor.BLACK + "] " + prefix + " " + ChatColor.AQUA + event.getPlayer().getName() + " left");
+    }
+
+    @EventHandler
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+        String lobbyWorld = extractManager.getLobbyWorld();
+        if (lobbyWorld != null && player.getWorld().getName().equals(lobbyWorld)) {
+            // In lobby, keep hunger at max
+            event.setFoodLevel(20);
+        }
     }
 
     private void giveStartingKit(Player player) {

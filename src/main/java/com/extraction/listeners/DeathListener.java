@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import java.time.LocalDate;
@@ -43,6 +44,10 @@ public class DeathListener implements Listener {
         Player player = event.getEntity();
         String lobbyWorld = extractManager.getLobbyWorld();
 
+        // Set custom death message
+        String customMessage = getCustomDeathMessage(player);
+        event.setDeathMessage(ChatColor.RED + customMessage);
+
         // Only queue teleport if they died outside the lobby
         if (
             lobbyWorld != null && player.getWorld().getName().equals(lobbyWorld)
@@ -57,6 +62,61 @@ public class DeathListener implements Listener {
             ChatColor.RED +
                 "You died! You will be sent to the lobby on respawn."
         );
+    }
+
+    private String getCustomDeathMessage(Player player) {
+        EntityDamageEvent lastDamage = player.getLastDamageCause();
+        if (lastDamage == null) {
+            return player.getName() + " met an unfortunate end.";
+        }
+
+        EntityDamageEvent.DamageCause cause = lastDamage.getCause();
+        switch (cause) {
+            case FALL:
+                return player.getName() + " fell to their doom.";
+            case FALLING_BLOCK:
+                return player.getName() + " was crushed by falling debris.";
+            case LAVA:
+                return player.getName() + " was melted in lava.";
+            case FIRE:
+            case FIRE_TICK:
+                return player.getName() + " burned to ashes.";
+            case DROWNING:
+                return player.getName() + " drowned.";
+            case SUFFOCATION:
+                return player.getName() + " suffocated.";
+            case ENTITY_ATTACK:
+            case ENTITY_SWEEP_ATTACK:
+                return player.getName() + " was slain by an enemy.";
+            case PROJECTILE:
+                return player.getName() + " was shot down.";
+            case VOID:
+                return player.getName() + " fell into the void.";
+            case LIGHTNING:
+                return player.getName() + " was struck by lightning.";
+            case POISON:
+                return player.getName() + " succumbed to poison.";
+            case MAGIC:
+                return player.getName() + " was defeated by magic.";
+            case WITHER:
+                return player.getName() + " withered away.";
+            case STARVATION:
+                return player.getName() + " starved.";
+            case THORNS:
+                return player.getName() + " was pricked by thorns.";
+            case HOT_FLOOR:
+                return player.getName() + " melted on magma.";
+            case CRAMMING:
+                return player.getName() + " was crushed.";
+            case DRYOUT:
+                return player.getName() + " dried out.";
+            case FREEZE:
+                return player.getName() + " froze to death.";
+            case SONIC_BOOM:
+                return player.getName() + " was blasted by sound.";
+            default:
+                return player.getName() + " died.";
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -94,6 +154,7 @@ public class DeathListener implements Listener {
             () -> {
                 if (player.isOnline()) {
                     player.teleport(spawn);
+                    player.setFoodLevel(20); // Full hunger in lobby
                     player.sendMessage(
                         ChatColor.GREEN + "You have been returned to the lobby."
                     );
