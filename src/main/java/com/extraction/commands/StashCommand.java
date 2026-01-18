@@ -78,6 +78,8 @@ public class StashCommand implements CommandExecutor, Listener {
         return createGuiItem(material, " ", "");
     }
 
+
+
     // --- GUI Creation Logic ---
 
     private Inventory createStashGUI(Player player) {
@@ -155,6 +157,8 @@ public class StashCommand implements CommandExecutor, Listener {
         );
         displayInv.setItem(SELL_SLOT, sellButton);
 
+
+
         // Close Stash Button (Slot 52)
         ItemStack exitIcon = createGuiItem(
             Material.BARRIER,
@@ -208,6 +212,7 @@ public class StashCommand implements CommandExecutor, Listener {
                 player.sendMessage(
                     ChatColor.YELLOW + "Opening the Sell Menu..."
                 );
+
             } else if (rawSlot == EXIT_SLOT) {
                 player.closeInventory();
             }

@@ -76,7 +76,46 @@ public class EconomyManager {
         return formatNumber(balance);
     }
 
-    private String formatNumber(double number) {
+    public double parseAmount(String input) throws NumberFormatException {
+        if (input == null || input.isEmpty()) {
+            throw new NumberFormatException("Input is null or empty");
+        }
+
+        input = input.trim().toLowerCase();
+        String[] suffixes = {"k", "m", "b", "t", "q", "Q", "s", "S", "o", "n", "d", "U", "D", "T", "Qt", "Qd", "Sd", "St", "O", "N", "v", "c"};
+
+        String suffix = "";
+        for (String s : suffixes) {
+            if (input.endsWith(s)) {
+                suffix = s;
+                input = input.substring(0, input.length() - s.length());
+                break;
+            }
+        }
+
+        double number;
+        try {
+            number = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Invalid number format: " + input);
+        }
+
+        if (number < 0) {
+            throw new NumberFormatException("Amount cannot be negative");
+        }
+
+        int exponent = 0;
+        for (int i = 0; i < suffixes.length; i++) {
+            if (suffixes[i].equals(suffix)) {
+                exponent = i + 1;
+                break;
+            }
+        }
+
+        return number * Math.pow(1000, exponent);
+    }
+
+    public String formatNumber(double number) {
         if (number < 1000) {
             if (number % 1 == 0) {
                 return String.valueOf((int) number);
