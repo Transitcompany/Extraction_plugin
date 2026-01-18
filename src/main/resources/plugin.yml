@@ -108,3 +108,12 @@ commands:
   team:
     description: Manage teams
     usage: /team <create|invite|accept|leave|chat|stash>
+  exv:
+    description: Show the latest updates and version
+    usage: /exv
+  msg:
+    description: Disabled command
+    usage: /msg <player> <message>
+  tell:
+    description: Disabled command
+    usage: /tell <player> <message>

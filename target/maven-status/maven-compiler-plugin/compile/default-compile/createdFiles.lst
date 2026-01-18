@@ -69,6 +69,7 @@ com\extraction\commands\AuctionCommand.class
 com\extraction\commands\LootChestSetCommand$2.class
 com\extraction\governance\Proposal.class
 com\extraction\commands\ExtractPointCommand.class
+com\extraction\commands\DisabledCommand.class
 com\extraction\managers\FirstTimeJoinManager.class
 com\extraction\commands\LootChestSetCommand$3$1.class
 com\extraction\resources\ResourcePackManager.class
@@ -90,6 +91,7 @@ com\extraction\listeners\CustomItemListener$1.class
 com\extraction\listeners\WeaponListener.class
 com\extraction\commands\SetServerMapCommand.class
 com\extraction\auction\AuctionManager$1.class
+com\extraction\commands\ExvCommand.class
 com\extraction\listeners\ChestListener.class
 com\extraction\commands\ServerMapCommand.class
 com\extraction\managers\DoorManager.class

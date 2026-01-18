@@ -1,4 +1,5 @@
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExtractPointCommand.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExvCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\GiveRankCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetMoneyCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\ExtractionPlugin.java
@@ -18,6 +19,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\l
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\data\PlayerDataManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ReportCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\ContainerListener.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\DisabledCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\RulesCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\GovernanceManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\FishingListener.java

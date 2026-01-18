@@ -13,6 +13,8 @@ import com.extraction.commands.ExtractPointCommand;
 import com.extraction.commands.GiveMoneyCommand;
 import com.extraction.commands.GiveRankCommand;
 import com.extraction.commands.PayCommand;
+import com.extraction.commands.ExvCommand;
+import com.extraction.commands.DisabledCommand;
 import com.extraction.commands.LootChestSetCommand;
 import com.extraction.commands.ProfileCommand;
 import com.extraction.commands.ReportCommand;
@@ -245,6 +247,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("team").setExecutor(
             new TeamCommand(this)
         );
+        getCommand("exv").setExecutor(new ExvCommand());
+        getCommand("msg").setExecutor(new DisabledCommand());
+        getCommand("tell").setExecutor(new DisabledCommand());
 
 
     }
@@ -280,6 +285,9 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer()
             .getPluginManager()
             .registerEvents(new ChatModerationListener(chatModerationManager), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new ProximityChatListener(this), this);
         // temperature subsystem removed
     }
 

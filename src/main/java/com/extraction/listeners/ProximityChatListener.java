@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +57,8 @@ public class ProximityChatListener implements Listener {
             }
 
             if (!sentToSomeone) {
-                long now = System.currentTimeMillis();
-                Long lastTime = lastProximityMessage.get(sender.getUniqueId());
-                if (lastTime == null || (now - lastTime) > MESSAGE_COOLDOWN) {
-                    sender.sendMessage(ChatColor.RED + "No one can hear you. You are too far away from other players.");
-                    lastProximityMessage.put(sender.getUniqueId(), now);
-                }
+                sender.sendMessage(ChatColor.RED + "No one hears you. You are too far away from other players.");
+                sender.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "No one hears you."));
             }
         }
     }
