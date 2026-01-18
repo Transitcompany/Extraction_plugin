@@ -16,6 +16,8 @@ public class ExvCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.WHITE + "- Fixed plugin.yml YAML errors for proper loading");
         sender.sendMessage(ChatColor.WHITE + "- Removed governance system (voting on rules)");
         sender.sendMessage(ChatColor.WHITE + "- Disabled /msg and /tell commands to enforce proximity chat only");
+
+        sender.sendMessage(ChatColor.WHITE + "- Respawn kit after death now includes random cooked food (15 of beef, bread, apple, etc.) instead of fixed beef");
         sender.sendMessage(ChatColor.GREEN + "Plugin is up to date!");
         return true;
     }

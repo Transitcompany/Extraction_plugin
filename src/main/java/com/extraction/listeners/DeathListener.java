@@ -197,12 +197,14 @@ public class DeathListener implements Listener {
         ItemStack sword = new ItemStack(Material.STONE_SWORD);
         ItemStack shovel = new ItemStack(Material.STONE_SHOVEL);
 
-        // 15 cooked beef
-        ItemStack beef = new ItemStack(Material.COOKED_BEEF, 15);
+        // Random food: 15 of one type
+        Material[] foods = {Material.COOKED_BEEF, Material.BREAD, Material.APPLE, Material.GOLDEN_APPLE, Material.COOKED_PORKCHOP, Material.COOKED_CHICKEN, Material.COOKED_MUTTON, Material.COOKED_RABBIT};
+        Material randomFood = foods[(int) (Math.random() * foods.length)];
+        ItemStack food = new ItemStack(randomFood, 15);
 
         // Add to inventory
         player.getInventory().setBoots(boots);
         player.getInventory().setLeggings(leggings);
-        player.getInventory().addItem(pickaxe, sword, shovel, beef);
+        player.getInventory().addItem(pickaxe, sword, shovel, food);
     }
 }
