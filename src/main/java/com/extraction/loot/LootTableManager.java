@@ -93,6 +93,8 @@ public class LootTableManager {
         
         // GPS item (rare but in any chest)
         commonLoot.add(new LootEntry(Material.TRIAL_KEY, 1, 1, 0.15, "gps"));
+        // Medkit item (less common than GPS)
+        commonLoot.add(new LootEntry(Material.OMINOUS_TRIAL_KEY, 1, 1, 0.08, "medkit"));
 
         // Rare loot table - substantially better items, improved iron gear
         List<LootEntry> rareLoot = new ArrayList<>();
@@ -235,24 +237,46 @@ public class LootTableManager {
     }
 
     private ItemStack createGpsItem(ItemStack item, ItemMeta meta) {
-        // Replace with trial key material
-        item.setType(Material.TRIAL_KEY);
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "GPS");
-            meta.setLore(java.util.Arrays.asList(
-                ChatColor.GRAY + "A device that reveals your coordinates",
-                ChatColor.GRAY + "Left or right-click to see your current location",
-                "",
-                ChatColor.YELLOW + "Value: $150"
-            ));
-            
-            // Set custom key to identify this item
-            PersistentDataContainer container = meta.getPersistentDataContainer();
-            NamespacedKey key = new NamespacedKey(plugin, "gps_trail_key");
-            container.set(key, PersistentDataType.BYTE, (byte) 1);
-            
-            item.setItemMeta(meta);
+        // Determine item type from material
+        boolean isGps = item.getType() == Material.TRIAL_KEY;
+        boolean isMedkit = item.getType() == Material.OMINOUS_TRIAL_KEY;
+
+        if (isGps) {
+            if (meta != null) {
+                meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "GPS");
+                meta.setLore(java.util.Arrays.asList(
+                    ChatColor.GRAY + "A device that reveals your coordinates",
+                    ChatColor.GRAY + "Left or right-click to see your current location",
+                    "",
+                    ChatColor.YELLOW + "Value: $150"
+                ));
+
+                // Set custom key to identify this item
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                NamespacedKey key = new NamespacedKey(plugin, "gps_trail_key");
+                container.set(key, PersistentDataType.BYTE, (byte) 1);
+
+                item.setItemMeta(meta);
+            }
+        } else if (isMedkit) {
+            if (meta != null) {
+                meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Medkit");
+                meta.setLore(java.util.Arrays.asList(
+                    ChatColor.GRAY + "A device that heals your wounds",
+                    ChatColor.GRAY + "Left or right-click to heal yourself",
+                    "",
+                    ChatColor.YELLOW + "Value: $200"
+                ));
+
+                // Set custom key to identify this item
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                NamespacedKey key = new NamespacedKey(plugin, "medkit");
+                container.set(key, PersistentDataType.BYTE, (byte) 1);
+
+                item.setItemMeta(meta);
+            }
         }
+
         return item;
     }
 

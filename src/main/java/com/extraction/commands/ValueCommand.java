@@ -349,6 +349,10 @@ public class ValueCommand implements CommandExecutor, Listener {
                     plugin,
                     "gps_trail_key"
                 );
+                NamespacedKey medkitKey = new NamespacedKey(
+                    plugin,
+                    "medkit"
+                );
 
                 if (container.has(bannerKey, PersistentDataType.BYTE)) {
                     return 50000.0; // Extraction Banner
@@ -370,6 +374,9 @@ public class ValueCommand implements CommandExecutor, Listener {
                 }
                 if (container.has(gpsTrailKey, PersistentDataType.BYTE)) {
                     return 150.0; // GPS Trail Key
+                }
+                if (container.has(medkitKey, PersistentDataType.BYTE)) {
+                    return 200.0; // Medkit
                 }
                 if (container.has(medKitKey, PersistentDataType.BYTE)) {
                     return 300.0; // Med Kit

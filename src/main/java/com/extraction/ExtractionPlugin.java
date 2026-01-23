@@ -11,7 +11,7 @@ import com.extraction.commands.ExtractGiveCommand;
 import com.extraction.commands.ExtractOutBannerCommand;
 import com.extraction.commands.ExtractPointCommand;
 import com.extraction.commands.GiveMoneyCommand;
-import com.extraction.commands.GiveGpsCommand;
+import com.extraction.commands.GiveItemCommand;
 import com.extraction.commands.GiveRankCommand;
 import com.extraction.commands.GiveMoneyCommand;
 import com.extraction.commands.PayCommand;
@@ -257,8 +257,8 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("giverank").setExecutor(
             new GiveRankCommand(this)
         );
-        getCommand("givegps").setExecutor(
-            new GiveGpsCommand(this)
+        getCommand("giveitem").setExecutor(
+            new GiveItemCommand(this)
         );
         getCommand("team").setExecutor(
             new TeamCommand(this)

@@ -13,7 +13,6 @@ com\extraction\crypto\CryptoManager$CryptoWallet.class
 com\extraction\ExtractionPlugin.class
 com\extraction\extract\ExtractManager$1.class
 com\extraction\managers\TutorialManager$3.class
-com\extraction\commands\GiveGpsCommand.class
 com\extraction\commands\BalanceCommand.class
 com\extraction\managers\ChatModerationManager.class
 com\extraction\loot\LootTableManager.class
@@ -65,6 +64,7 @@ com\extraction\managers\ServerMapManager.class
 com\extraction\auction\AuctionManager.class
 com\extraction\listeners\FishingListener.class
 com\extraction\data\PlayerDataManager.class
+com\extraction\commands\GiveItemCommand.class
 com\extraction\listeners\CustomItemListener$2.class
 com\extraction\team\Team.class
 com\extraction\stash\StashManager.class

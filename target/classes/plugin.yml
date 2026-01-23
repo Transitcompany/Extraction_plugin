@@ -104,9 +104,9 @@ commands:
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>
-  givegps:
-    description: Give GPS to players
-    usage: /givegps <player> [amount]
+  giveitem:
+    description: Give custom items to players
+    usage: /giveitem <player> <gps|medkit> [amount]
     permission: extraction.admin
   team:
     description: Manage teams

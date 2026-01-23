@@ -222,6 +222,15 @@ public class CustomItemListener implements Listener {
             event.setCancelled(true);
             setCooldown(player.getUniqueId(), "gps");
             useGpsTrailKey(player, item);
+        } else if (hasKey(item, "medkit")) {
+            if (isOnCooldown(player.getUniqueId(), "medkit", 10000L)) {
+                player.sendMessage(ChatColor.RED + "Medkit is on cooldown! Wait 10 seconds.");
+                event.setCancelled(true);
+                return;
+            }
+            event.setCancelled(true);
+            setCooldown(player.getUniqueId(), "medkit");
+            useMedkit(player, item);
         }
     }
 
@@ -1556,5 +1565,75 @@ public class CustomItemListener implements Listener {
                 step++;
             }
         }.runTaskTimer(plugin, 0L, 8L); // 8 ticks = 0.4 seconds between each line
+    }
+
+    private void useMedkit(Player player, ItemStack item) {
+        Location loc = player.getLocation();
+        World world = loc.getWorld();
+
+        // Check uses remaining
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        NamespacedKey usesKey = new NamespacedKey(plugin, "medkit_uses");
+        int usesLeft = container.getOrDefault(usesKey, PersistentDataType.INTEGER, 3);
+
+        // Heal the player
+        double maxHealth = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue();
+        double currentHealth = player.getHealth();
+
+        if (currentHealth >= maxHealth) {
+            player.sendMessage(ChatColor.YELLOW + "You're already at full health!");
+            return;
+        }
+
+        // Heal 8 hearts (16 health points)
+        double healAmount = Math.min(16.0, maxHealth - currentHealth);
+        double newHealth = currentHealth + healAmount;
+        player.setHealth(newHealth);
+
+        // Apply regeneration effect
+        player.addPotionEffect(
+            new PotionEffect(PotionEffectType.REGENERATION, 100, 1)
+        );
+
+        // Remove poison if present
+        player.removePotionEffect(PotionEffectType.POISON);
+
+        // Play healing sound
+        player.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.5f);
+
+        // Create healing particles
+        world.spawnParticle(Particle.HEART, loc.add(0, 1, 0), 20, 0.5, 0.5, 0.5, 0.1);
+        world.spawnParticle(Particle.HAPPY_VILLAGER, loc.add(0, 1, 0), 15, 0.3, 0.5, 0.3, 0.05);
+
+        // Calculate hearts healed (1 heart = 2 health points)
+        int heartsHealed = (int) Math.ceil(healAmount / 2.0);
+        player.sendMessage(ChatColor.GREEN + "Medkit used! +" + heartsHealed + " heart" + (heartsHealed != 1 ? "s" : "") + " healed!");
+
+        // Decrease uses and update item
+        usesLeft--;
+        if (usesLeft > 0) {
+            container.set(usesKey, PersistentDataType.INTEGER, usesLeft);
+
+            // Update lore to show remaining uses
+            java.util.List<String> lore = meta.getLore();
+            if (lore != null && lore.size() >= 3) {
+                lore.set(2, ChatColor.GRAY + "Uses remaining: " + usesLeft + "/3");
+                meta.setLore(lore);
+            }
+
+            item.setItemMeta(meta);
+            player.sendMessage(ChatColor.YELLOW + "Medkit has " + usesLeft + " use" + (usesLeft != 1 ? "s" : "") + " remaining!");
+        } else {
+            // Remove item when no uses left
+            if (item.getAmount() > 1) {
+                item.setAmount(item.getAmount() - 1);
+            } else {
+                player.getInventory().setItemInMainHand(null);
+            }
+            player.sendMessage(ChatColor.RED + "Medkit depleted!");
+        }
     }
 }
