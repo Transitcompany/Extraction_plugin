@@ -345,8 +345,11 @@ player.sendActionBar(
                     .clone();
                 World world = Bukkit.getWorld(extractWorld);
                 if (world != null) {
-                    randomPoint.setWorld(world);
+                             randomPoint.setWorld(world);
                     player.teleport(randomPoint);
+
+                    // Deploy sound
+                    player.playSound(randomPoint, org.bukkit.Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
                 }
             } else {
                 extractPlayerToLobby(player);
@@ -419,11 +422,17 @@ player.sendActionBar(
                                 .get(random.nextInt(extractToPoints.size()))
                                 .clone();
                             randomPoint.setWorld(world);
-                            player.teleport(randomPoint);
+                    player.teleport(randomPoint);
+
+                    // Deploy sound
+                    player.playSound(randomPoint, org.bukkit.Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
                         } else {
                             Location spawn = world.getSpawnLocation().clone();
                             spawn.setY(spawn.getY() + 1);
                             player.teleport(spawn);
+
+                            // Deploy sound
+                            player.playSound(spawn, org.bukkit.Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
                         }
                     }
                     cancel();
@@ -443,6 +452,12 @@ player.sendActionBar(
                         ChatColor.RED +
                         "Don't move!"
                 );
+
+                // Play countdown sounds
+                if (count == 10 || count == 5 || count <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                }
+
                 count--;
             }
         };
@@ -490,4 +505,6 @@ player.sendActionBar(
             Integer.parseInt(p[3])
         );
     }
+
+
 }

@@ -215,6 +215,12 @@ public class BannerListener implements Listener {
                         ChatColor.RED +
                         "Don't move!"
                 );
+
+                // Play countdown sounds
+                if (count == 10 || count == 5 || count <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                }
+
                 count--;
             }
         }
