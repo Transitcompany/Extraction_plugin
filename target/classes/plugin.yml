@@ -106,7 +106,7 @@ commands:
     usage: /giverank <player> <rank>
   giveitem:
     description: Give custom items to players
-    usage: /giveitem <player> <gps|medkit> [amount]
+    usage: /giveitem <player> <gps|medkit|cyanide_pill> [amount]
     permission: extraction.admin
   team:
     description: Manage teams

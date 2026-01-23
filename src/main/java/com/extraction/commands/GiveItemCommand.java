@@ -30,7 +30,7 @@ public class GiveItemCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.YELLOW + "Usage: /giveitem <player> <gps|medkit> [amount]");
+            sender.sendMessage(ChatColor.YELLOW + "Usage: /giveitem <player> <gps|medkit|cyanide_pill> [amount]");
             return true;
         }
 
@@ -41,8 +41,8 @@ public class GiveItemCommand implements CommandExecutor {
         }
 
         String itemType = args[1].toLowerCase();
-        if (!itemType.equals("gps") && !itemType.equals("medkit")) {
-            sender.sendMessage(ChatColor.RED + "Invalid item type! Use 'gps' or 'medkit'");
+        if (!itemType.equals("gps") && !itemType.equals("medkit") && !itemType.equals("cyanide_pill")) {
+            sender.sendMessage(ChatColor.RED + "Invalid item type! Use 'gps', 'medkit', or 'cyanide_pill'");
             return true;
         }
 
@@ -85,20 +85,26 @@ public class GiveItemCommand implements CommandExecutor {
             loreText = "Left or right-click to see your current location";
             keyName = "gps_trail_key";
             value = 150;
-        } else { // medkit
+        } else if (itemType.equals("medkit")) {
             material = Material.OMINOUS_TRIAL_KEY;
             displayName = ChatColor.RED + "" + ChatColor.BOLD + "Medkit";
             loreText = "Left or right-click to heal yourself";
             keyName = "medkit";
             value = 200;
+        } else { // cyanide_pill
+            material = Material.BLAZE_ROD;
+            displayName = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Cyanide Pill";
+            loreText = "Right-click to consume this deadly poison";
+            keyName = "cyanide_pill";
+            value = 0;
         }
 
-        ItemStack item = new ItemStack(material, amount);
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(displayName);
             meta.setLore(java.util.Arrays.asList(
-                ChatColor.GRAY + "A device that " + (itemType.equals("gps") ? "reveals your coordinates" : "heals your wounds"),
+                ChatColor.GRAY + "A " + (itemType.equals("gps") ? "device that reveals your coordinates" : itemType.equals("medkit") ? "device that heals your wounds" : "deadly poison that will kill you"),
                 ChatColor.GRAY + loreText,
                 "",
                 ChatColor.YELLOW + "Value: $" + value
@@ -108,6 +114,19 @@ public class GiveItemCommand implements CommandExecutor {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             NamespacedKey key = new NamespacedKey(plugin, keyName);
             container.set(key, PersistentDataType.BYTE, (byte) 1);
+
+            // Set initial uses for medkit
+            if (itemType.equals("medkit")) {
+                NamespacedKey usesKey = new NamespacedKey(plugin, "medkit_uses");
+                container.set(usesKey, PersistentDataType.INTEGER, 3);
+
+                // Update lore to show uses
+                java.util.List<String> lore = meta.getLore();
+                if (lore != null && lore.size() >= 3) {
+                    lore.add(ChatColor.GRAY + "Uses remaining: 3/3");
+                    meta.setLore(lore);
+                }
+            }
 
             item.setItemMeta(meta);
         }

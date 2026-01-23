@@ -95,6 +95,8 @@ public class LootTableManager {
         commonLoot.add(new LootEntry(Material.TRIAL_KEY, 1, 1, 0.15, "gps"));
         // Medkit item (less common than GPS)
         commonLoot.add(new LootEntry(Material.OMINOUS_TRIAL_KEY, 1, 1, 0.08, "medkit"));
+        // Cyanide pill item (very rare and dangerous)
+        commonLoot.add(new LootEntry(Material.BLAZE_ROD, 1, 1, 0.05, "cyanide_pill"));
 
         // Rare loot table - substantially better items, improved iron gear
         List<LootEntry> rareLoot = new ArrayList<>();
@@ -236,10 +238,11 @@ public class LootTableManager {
         return selectedLoot;
     }
 
-    private ItemStack createGpsItem(ItemStack item, ItemMeta meta) {
+    private ItemStack createCustomItem(ItemStack item, ItemMeta meta) {
         // Determine item type from material
         boolean isGps = item.getType() == Material.TRIAL_KEY;
         boolean isMedkit = item.getType() == Material.OMINOUS_TRIAL_KEY;
+        boolean isCyanidePill = item.getType() == Material.BLAZE_ROD;
 
         if (isGps) {
             if (meta != null) {
@@ -264,6 +267,7 @@ public class LootTableManager {
                 meta.setLore(java.util.Arrays.asList(
                     ChatColor.GRAY + "A device that heals your wounds",
                     ChatColor.GRAY + "Left or right-click to heal yourself",
+                    ChatColor.GRAY + "Uses remaining: 3/3",
                     "",
                     ChatColor.YELLOW + "Value: $200"
                 ));
@@ -271,6 +275,27 @@ public class LootTableManager {
                 // Set custom key to identify this item
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 NamespacedKey key = new NamespacedKey(plugin, "medkit");
+                container.set(key, PersistentDataType.BYTE, (byte) 1);
+
+                // Set initial uses
+                NamespacedKey usesKey = new NamespacedKey(plugin, "medkit_uses");
+                container.set(usesKey, PersistentDataType.INTEGER, 3);
+
+                item.setItemMeta(meta);
+            }
+        } else if (isCyanidePill) {
+            if (meta != null) {
+                meta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Cyanide Pill");
+                meta.setLore(java.util.Arrays.asList(
+                    ChatColor.GRAY + "A deadly poison that will kill you",
+                    ChatColor.GRAY + "Right-click to consume this deadly poison",
+                    "",
+                    ChatColor.YELLOW + "Value: $0"
+                ));
+
+                // Set custom key to identify this item
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                NamespacedKey key = new NamespacedKey(plugin, "cyanide_pill");
                 container.set(key, PersistentDataType.BYTE, (byte) 1);
 
                 item.setItemMeta(meta);
@@ -288,9 +313,9 @@ public class LootTableManager {
 
         ItemMeta meta = item.getItemMeta();
 
-        // Handle custom items like GPS
-        if (entry.customType != null && entry.customType.equals("gps")) {
-            return createGpsItem(item, meta);
+        // Handle custom items like GPS, medkit, and cyanide pill
+        if (entry.customType != null && (entry.customType.equals("gps") || entry.customType.equals("medkit") || entry.customType.equals("cyanide_pill"))) {
+            return createCustomItem(item, meta);
         }
 
         // Apply durability damage if specified

@@ -231,6 +231,9 @@ public class CustomItemListener implements Listener {
             event.setCancelled(true);
             setCooldown(player.getUniqueId(), "medkit");
             useMedkit(player, item);
+        } else if (hasKey(item, "cyanide_pill")) {
+            event.setCancelled(true);
+            consumeCyanidePill(player, item);
         }
     }
 
@@ -1635,5 +1638,50 @@ public class CustomItemListener implements Listener {
             }
             player.sendMessage(ChatColor.RED + "Medkit depleted!");
         }
+    }
+
+    private void consumeCyanidePill(Player player, ItemStack item) {
+        Location loc = player.getLocation();
+        World world = loc.getWorld();
+
+        // Play eating sound and animation
+        player.playSound(loc, Sound.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
+
+        // Consume the item
+        consumeItem(player, item);
+
+        // Send message
+        player.sendMessage(ChatColor.DARK_RED + "You swallow the cyanide pill...");
+
+        // Apply cyanide effects
+        applyCyanideEffects(player);
+    }
+
+    private void applyCyanideEffects(Player player) {
+        // Immediate effects: nausea and weakness
+        player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 200, 1)); // 10 seconds
+        player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 300, 1)); // 15 seconds
+
+        // After 5 seconds, add poison
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (player.isOnline()) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 1)); // 10 seconds poison
+                    player.sendMessage(ChatColor.RED + "You feel the poison coursing through your veins...");
+                }
+            }
+        }.runTaskLater(plugin, 100L); // 5 seconds
+
+        // After 15 seconds, kill the player
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (player.isOnline()) {
+                    player.setHealth(0.0);
+                    player.sendMessage(ChatColor.DARK_RED + "The cyanide has taken effect. You die.");
+                }
+            }
+        }.runTaskLater(plugin, 300L); // 15 seconds
     }
 }
