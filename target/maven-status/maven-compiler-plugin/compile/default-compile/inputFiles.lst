@@ -1,5 +1,6 @@
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExtractPointCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExvCommand.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\GiveGpsCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\GiveRankCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetMoneyCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\ExtractionPlugin.java
@@ -29,6 +30,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\m
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ClaimDoorCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetReportWebhookCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\FirstTimeJoinManager.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\TermsOfServiceManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\resources\ResourcePackManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ServerMapCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\TeamManager.java
@@ -41,6 +43,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SellCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExtractGiveCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\crypto\CryptoManager.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\BlockDropsListener.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetServerMapCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\TeamCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\JoinLeaveListener.java
@@ -48,6 +51,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\placeholders\BalancePlaceholder.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\team\Team.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\SetHighLocCommand.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\LoginLogManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ExtractOutBannerCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\GiveMoneyCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\listeners\HighLocListener.java
@@ -57,6 +61,7 @@ C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\c
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\economy\EconomyManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\stash\StashManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\loot\LootTableManager.java
+C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\TosCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\managers\RulesManager.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\BalanceCommand.java
 C:\Users\wired\Documents\Builds\Extraction_plugin\src\main\java\com\extraction\commands\ValueCommand.java

@@ -11,7 +11,9 @@ import com.extraction.commands.ExtractGiveCommand;
 import com.extraction.commands.ExtractOutBannerCommand;
 import com.extraction.commands.ExtractPointCommand;
 import com.extraction.commands.GiveMoneyCommand;
+import com.extraction.commands.GiveGpsCommand;
 import com.extraction.commands.GiveRankCommand;
+import com.extraction.commands.GiveMoneyCommand;
 import com.extraction.commands.PayCommand;
 import com.extraction.commands.ExvCommand;
 import com.extraction.commands.DisabledCommand;
@@ -30,6 +32,7 @@ import com.extraction.commands.SetServerMapCommand;
 import com.extraction.commands.SetWorldCommand;
 import com.extraction.commands.StashCommand;
 import com.extraction.commands.TeamCommand;
+import com.extraction.commands.TosCommand;
 
 import com.extraction.commands.ValueCommand;
 import com.extraction.commands.WipeCommand;
@@ -49,9 +52,13 @@ import com.extraction.leveling.LevelingManager;
 import com.extraction.managers.ChestManager;
 import com.extraction.managers.DoorManager;
 import com.extraction.managers.TeamManager;
+import com.extraction.managers.TermsOfServiceManager;
 import com.extraction.managers.FirstTimeJoinManager;
 import com.extraction.managers.ChatModerationManager;
+import com.extraction.managers.ReportManager;
+import com.extraction.managers.ServerMapManager;
 import com.extraction.managers.HighLocManager;
+import com.extraction.managers.LoginLogManager;
 import com.extraction.managers.ReportManager;
 import com.extraction.managers.ServerMapManager;
 import com.extraction.placeholders.BalancePlaceholder;
@@ -63,12 +70,14 @@ import com.extraction.listeners.CryptoWalletListener;
 import com.extraction.listeners.CustomItemListener;
 import com.extraction.listeners.DeathListener;
 import com.extraction.listeners.DoorListener;
-import com.extraction.listeners.FishingListener;
+
 import com.extraction.listeners.HighLocListener;
 import com.extraction.listeners.JoinLeaveListener;
 import com.extraction.listeners.ProximityChatListener;
 
 import com.extraction.listeners.ChatModerationListener;
+import com.extraction.listeners.BlockDropsListener;
+import com.extraction.listeners.FishingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -102,6 +111,8 @@ public class ExtractionPlugin extends JavaPlugin {
     private ReportManager reportManager;
     private ServerMapManager serverMapManager;
     private HighLocManager highLocManager;
+    private LoginLogManager loginLogManager;
+    private TermsOfServiceManager termsOfServiceManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -126,10 +137,12 @@ public class ExtractionPlugin extends JavaPlugin {
            this.doorManager = new DoorManager(this);
            this.teamManager = new TeamManager();
            this.firstTimeJoinManager = new FirstTimeJoinManager(this);
-           this.chatModerationManager = new ChatModerationManager(this);
-           this.reportManager = new ReportManager(this);
-            this.serverMapManager = new ServerMapManager(this);
-            this.highLocManager = new HighLocManager(this);
+            this.chatModerationManager = new ChatModerationManager(this);
+            this.reportManager = new ReportManager(this);
+             this.serverMapManager = new ServerMapManager(this);
+             this.highLocManager = new HighLocManager(this);
+              this.loginLogManager = new LoginLogManager(this);
+              this.termsOfServiceManager = new TermsOfServiceManager(this);
 
         // Add custom campfire recipe for rotten flesh to leather
         CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
@@ -161,10 +174,10 @@ public class ExtractionPlugin extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new BalancePlaceholder(this).register();
             new TeamPlaceholder(this).register();
-            getLogger().info("Registered %Vbalance% and %Extract_team% placeholders with PlaceholderAPI.");
+            getLogger().info("[Extraction] Registered %Vbalance% and %Extract_team% placeholders with PlaceholderAPI!");
         }
 
-        getLogger().info("Extraction plugin enabled!");
+        getLogger().info("[Extraction] Plugin loaded successfully.");
     }
 
     private void registerCommands() {
@@ -244,12 +257,16 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("giverank").setExecutor(
             new GiveRankCommand(this)
         );
+        getCommand("givegps").setExecutor(
+            new GiveGpsCommand(this)
+        );
         getCommand("team").setExecutor(
             new TeamCommand(this)
         );
         getCommand("exv").setExecutor(new ExvCommand());
         getCommand("msg").setExecutor(new DisabledCommand());
         getCommand("tell").setExecutor(new DisabledCommand());
+        getCommand("tos").setExecutor(new TosCommand(termsOfServiceManager));
 
 
     }
@@ -267,12 +284,10 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer()
             .getPluginManager()
             .registerEvents(new BannerListener(this, extractManager), this);
+
         getServer()
             .getPluginManager()
-            .registerEvents(new FishingListener(this), this);
-        getServer()
-            .getPluginManager()
-            .registerEvents(new JoinLeaveListener(this, extractManager), this);
+            .registerEvents(new JoinLeaveListener(this, extractManager, termsOfServiceManager), this);
         getServer()
             .getPluginManager()
             .registerEvents(new ChestListener(this, chestManager), this);
@@ -288,6 +303,15 @@ public class ExtractionPlugin extends JavaPlugin {
         getServer()
             .getPluginManager()
             .registerEvents(new ProximityChatListener(this), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new BlockDropsListener(), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new CustomItemListener(this), this);
+        getServer()
+            .getPluginManager()
+            .registerEvents(new FishingListener(), this);
         // temperature subsystem removed
     }
 
@@ -373,6 +397,14 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public HighLocManager getHighLocManager() {
         return highLocManager;
+    }
+
+    public LoginLogManager getLoginLogManager() {
+        return loginLogManager;
+    }
+
+    public TermsOfServiceManager getTermsOfServiceManager() {
+        return termsOfServiceManager;
     }
 
     private void startHighLocSpawner() {

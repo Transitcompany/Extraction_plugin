@@ -349,6 +349,10 @@ public class SellCommand implements CommandExecutor, Listener {
                     plugin,
                     "cash_value"
                 );
+                NamespacedKey gpsTrailKey = new NamespacedKey(
+                    plugin,
+                    "gps_trail_key"
+                );
 
                 if (container.has(bannerKey, PersistentDataType.BYTE)) {
                     return 50000.0; // Extraction Banner
@@ -367,6 +371,9 @@ public class SellCommand implements CommandExecutor, Listener {
                 }
                 if (container.has(trackerKey, PersistentDataType.BYTE)) {
                     return 600.0; // Tracker Compass
+                }
+                if (container.has(gpsTrailKey, PersistentDataType.BYTE)) {
+                    return 150.0; // GPS Trail Key
                 }
                 if (container.has(medKitKey, PersistentDataType.BYTE)) {
                     return 300.0; // Med Kit

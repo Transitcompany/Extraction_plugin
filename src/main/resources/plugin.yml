@@ -69,7 +69,6 @@ commands:
     description: Toggle resource pack enforcement
     usage: /disableresourcepack [toggle]
     permission: extraction.resourcepack.manage
-
   tempevent:
     description: Trigger temperature events
     usage: /tempevent <heatwave|cold|end>
@@ -105,6 +104,10 @@ commands:
   giverank:
     description: Give a rank to a player
     usage: /giverank <player> <rank>
+  givegps:
+    description: Give GPS to players
+    usage: /givegps <player> [amount]
+    permission: extraction.admin
   team:
     description: Manage teams
     usage: /team <create|invite|accept|leave|chat|stash>
@@ -117,3 +120,9 @@ commands:
   tell:
     description: Disabled command
     usage: /tell <player> <message>
+  tos:
+    description: View the server Terms of Service
+    usage: /tos
+  accept:
+    description: Accept the Terms of Service
+    usage: /accept

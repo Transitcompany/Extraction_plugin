@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.event.EventPriority;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -121,11 +122,13 @@ public class CustomItemListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (
             event.getAction() != Action.RIGHT_CLICK_AIR &&
-            event.getAction() != Action.RIGHT_CLICK_BLOCK
+            event.getAction() != Action.RIGHT_CLICK_BLOCK &&
+            event.getAction() != Action.LEFT_CLICK_AIR &&
+            event.getAction() != Action.LEFT_CLICK_BLOCK
         ) {
             return;
         }
@@ -210,6 +213,15 @@ public class CustomItemListener implements Listener {
         } else if (hasKey(item, "crypto_wallet")) {
             event.setCancelled(true);
             useCryptoWallet(player, item);
+        } else if (hasKey(item, "gps_trail_key")) {
+            if (isOnCooldown(player.getUniqueId(), "gps", 5000L)) {
+                player.sendMessage(ChatColor.RED + "GPS is on cooldown! Wait 5 seconds.");
+                event.setCancelled(true);
+                return;
+            }
+            event.setCancelled(true);
+            setCooldown(player.getUniqueId(), "gps");
+            useGpsTrailKey(player, item);
         }
     }
 
@@ -1488,5 +1500,61 @@ public class CustomItemListener implements Listener {
         
         cryptoManager.openCryptoWallet(player, item);
         player.sendMessage(ChatColor.YELLOW + "Opening crypto wallet...");
+    }
+
+    private void useGpsTrailKey(Player player, ItemStack item) {
+        Location loc = player.getLocation();
+
+        // Start animated GPS display with sounds
+        new BukkitRunnable() {
+            int step = 0;
+            final int x = (int) loc.getX();
+            final int y = (int) loc.getY();
+            final int z = (int) loc.getZ();
+            final String world = loc.getWorld().getName();
+
+            @Override
+            public void run() {
+                switch (step) {
+                    case 0:
+                        player.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "GPS");
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
+                        break;
+                    case 1:
+                        player.sendMessage(ChatColor.GRAY + "Our Coordinates:");
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.8f);
+                        break;
+                    case 2:
+                        player.sendMessage(ChatColor.YELLOW + "X: " + x);
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.6f);
+                        break;
+                    case 3:
+                        player.sendMessage(ChatColor.YELLOW + "Y: " + y);
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.4f);
+                        break;
+                    case 4:
+                        player.sendMessage(ChatColor.YELLOW + "Z: " + z);
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
+                        break;
+                    case 5:
+                        player.sendMessage(ChatColor.GRAY + "World: " + world);
+                        player.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+
+                        // Create final particle effect
+                        player.getWorld().spawnParticle(
+                            Particle.ENCHANT,
+                            loc.add(0, 1, 0),
+                            30,
+                            0.7,
+                            1.2,
+                            0.7,
+                            0.1
+                        );
+                        cancel();
+                        return;
+                }
+                step++;
+            }
+        }.runTaskTimer(plugin, 0L, 8L); // 8 ticks = 0.4 seconds between each line
     }
 }

@@ -90,6 +90,9 @@ public class LootTableManager {
         commonLoot.add(new LootEntry(Material.TORCH, 8, 24, 0.8)); // Increased amount and chance
         commonLoot.add(new LootEntry(Material.PAPER, 3, 8, 0.4));
         commonLoot.add(new LootEntry(Material.BOOK, 1, 3, 0.3));
+        
+        // GPS item (rare but in any chest)
+        commonLoot.add(new LootEntry(Material.TRIAL_KEY, 1, 1, 0.15, "gps"));
 
         // Rare loot table - substantially better items, improved iron gear
         List<LootEntry> rareLoot = new ArrayList<>();
@@ -231,6 +234,28 @@ public class LootTableManager {
         return selectedLoot;
     }
 
+    private ItemStack createGpsItem(ItemStack item, ItemMeta meta) {
+        // Replace with trial key material
+        item.setType(Material.TRIAL_KEY);
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "GPS");
+            meta.setLore(java.util.Arrays.asList(
+                ChatColor.GRAY + "A device that reveals your coordinates",
+                ChatColor.GRAY + "Left or right-click to see your current location",
+                "",
+                ChatColor.YELLOW + "Value: $150"
+            ));
+            
+            // Set custom key to identify this item
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(plugin, "gps_trail_key");
+            container.set(key, PersistentDataType.BYTE, (byte) 1);
+            
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
     private ItemStack createItem(LootEntry entry) {
         int amount =
             entry.minAmount +
@@ -238,6 +263,11 @@ public class LootTableManager {
         ItemStack item = new ItemStack(entry.material, amount);
 
         ItemMeta meta = item.getItemMeta();
+
+        // Handle custom items like GPS
+        if (entry.customType != null && entry.customType.equals("gps")) {
+            return createGpsItem(item, meta);
+        }
 
         // Apply durability damage if specified
         if (entry.hasDurabilityRange() && meta instanceof Damageable) {
@@ -301,6 +331,7 @@ public class LootTableManager {
         final double minDurability;
         final double maxDurability;
         final boolean hasTrim;
+        final String customType; // For custom items like GPS
 
         // Constructor for items without durability variation
         LootEntry(
@@ -316,6 +347,7 @@ public class LootTableManager {
             this.minDurability = -1;
             this.maxDurability = -1;
             this.hasTrim = false;
+            this.customType = null;
         }
 
         // Constructor for items with durability variation (damaged items)
@@ -334,6 +366,7 @@ public class LootTableManager {
             this.minDurability = minDurability;
             this.maxDurability = maxDurability;
             this.hasTrim = false;
+            this.customType = null;
         }
 
         // Constructor for items with durability and trim
@@ -353,6 +386,25 @@ public class LootTableManager {
             this.minDurability = minDurability;
             this.maxDurability = maxDurability;
             this.hasTrim = hasTrim;
+            this.customType = null;
+        }
+
+        // Constructor for custom items (like GPS)
+        LootEntry(
+            Material material,
+            int minAmount,
+            int maxAmount,
+            double dropChance,
+            String customType
+        ) {
+            this.material = material;
+            this.minAmount = minAmount;
+            this.maxAmount = maxAmount;
+            this.dropChance = dropChance;
+            this.minDurability = -1;
+            this.maxDurability = -1;
+            this.hasTrim = false;
+            this.customType = customType;
         }
 
         boolean hasDurabilityRange() {

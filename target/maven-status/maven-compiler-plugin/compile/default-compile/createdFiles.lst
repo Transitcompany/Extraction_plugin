@@ -1,5 +1,6 @@
 com\extraction\managers\ReportManager.class
 com\extraction\auction\AuctionManager$AuctionListing.class
+com\extraction\listeners\CustomItemListener$9.class
 com\extraction\commands\VoteCommand.class
 com\extraction\commands\LootChestSetCommand$1.class
 com\extraction\listeners\ChatModerationListener.class
@@ -12,17 +13,20 @@ com\extraction\crypto\CryptoManager$CryptoWallet.class
 com\extraction\ExtractionPlugin.class
 com\extraction\extract\ExtractManager$1.class
 com\extraction\managers\TutorialManager$3.class
+com\extraction\commands\GiveGpsCommand.class
 com\extraction\commands\BalanceCommand.class
 com\extraction\managers\ChatModerationManager.class
 com\extraction\loot\LootTableManager.class
 com\extraction\commands\ProfileCommand.class
 com\extraction\listeners\CryptoWalletListener.class
+com\extraction\listeners\JoinLeaveListener$1.class
 com\extraction\commands\SellCommand.class
 com\extraction\commands\StashCommand.class
 com\extraction\commands\WipeCommand.class
 com\extraction\commands\AuctionCommand$AuctionMode.class
 com\extraction\listeners\ContainerListener.class
 com\extraction\listeners\WeaponListener$1.class
+com\extraction\listeners\BlockDropsListener.class
 com\extraction\commands\LootChestSetCommand.class
 com\extraction\commands\SetMoneyCommand.class
 com\extraction\commands\ValueCommand.class
@@ -47,6 +51,7 @@ com\extraction\commands\SetWorldCommand.class
 com\extraction\loot\LootContainerManager.class
 com\extraction\commands\SetHighLocCommand.class
 com\extraction\commands\GiveRankCommand.class
+com\extraction\managers\LoginLogManager.class
 com\extraction\resources\ResourcePackManager$1.class
 com\extraction\data\PlayerDataManager$PlayerData.class
 com\extraction\commands\GiveMoneyCommand.class
@@ -68,6 +73,8 @@ com\extraction\listeners\HighLocListener.class
 com\extraction\listeners\BannerListener.class
 com\extraction\commands\ClaimDoorCommand.class
 com\extraction\listeners\DeathListener$1.class
+com\extraction\commands\TosCommand.class
+com\extraction\managers\LoginLogManager$LoginEntry.class
 com\extraction\commands\AuctionCommand.class
 com\extraction\commands\LootChestSetCommand$2.class
 com\extraction\governance\Proposal.class
@@ -87,6 +94,7 @@ com\extraction\commands\PayCommand.class
 com\extraction\leveling\LevelingManager.class
 com\extraction\managers\HighLocManager.class
 com\extraction\listeners\CustomItemListener$5.class
+com\extraction\managers\TermsOfServiceManager.class
 com\extraction\commands\ClaimChestCommand.class
 com\extraction\managers\TeamManager.class
 com\extraction\listeners\CustomItemListener$7.class
@@ -101,7 +109,6 @@ com\extraction\listeners\ChestListener.class
 com\extraction\commands\ServerMapCommand.class
 com\extraction\managers\DoorManager.class
 com\extraction\economy\EconomyManager.class
-com\extraction\listeners\FishingListener$1.class
 com\extraction\commands\HelpmeCommand.class
 com\extraction\managers\RulesManager.class
 com\extraction\placeholders\BalancePlaceholder.class

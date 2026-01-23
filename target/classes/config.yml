@@ -1,0 +1,27 @@
+# Extraction Plugin Configuration
+
+# Terms of Service Configuration
+terms-of-service:
+  version: "1.0"
+  content:
+    - ""
+    - "§b§l=== SERVER TERMS OF SERVICE ==="
+    - ""
+    - "§e§lData Collection Policy:"
+    - "§f• §7Player UUID (unique identifier)"
+    - "§f• §7Username"
+    - "§f• §7IP address"
+    - "§f• §7Approximate geolocation (country/region)"
+    - "§f• §7Server activity and moderation logs"
+    - ""
+    - "§e§lPurpose:"
+    - "§f• §7Server security and anti-cheat measures"
+    - "§f• §7Moderation and rule enforcement"
+    - "§f• §7Server analytics and improvements"
+    - "§f• §7Player support and issue resolution"
+    - ""
+    - "§e§lYour Rights:"
+    - "§f• §7Data is stored securely and not shared"
+    - "§f• §7You can request data deletion anytime"
+    - "§f• §7You can view this agreement with §b/tos"
+    - ""
