@@ -1,0 +1,111 @@
+================================================================================
+                    ATM TERMINAL - VISUAL REPRESENTATION
+================================================================================
+
+When a player types /atm, they see this beautiful 5-row inventory GUI:
+
+ROW 1 (Slots 0-8):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│  🟡    │        │        │        │        │        │        │        │  🟡    │
+│Gold   │Black  │Black  │Black  │Black  │Black  │Black  │Black  │Gold   │
+│Corner │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Corner │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+ROW 2 (Slots 9-17):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│        │        │        │        │        │        │        │        │        │
+│Black  │Black  │Black  │Black  │Black  │Black  │Black  │Black  │Black  │
+│Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+ROW 3 (Slots 18-26):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│        │        │  🟢   │  🟢   │  🟦   │  🟢   │  🟢   │        │        │
+│Black  │Black  │LED    │LED    │ATM    │LED    │LED    │Black  │Black  │
+│Glass  │Glass  │Light  │Light  │Display│Light  │Light  │Glass  │Glass  │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+ROW 4 (Slots 27-35):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│        │        │  🟢   │  🟢   │  🟦   │  🟢   │  🟢   │        │  🟡    │
+│Black  │Black  │LED    │LED    │ATM    │LED    │LED    │Black  │Gold   │
+│Glass  │Glass  │Light  │Light  │Display│Light  │Light  │Glass  │Corner │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+ROW 5 (Slots 36-44):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│        │        │        │        │        │        │        │        │        │
+│Black  │Black  │Black  │Black  │Black  │Black  │Black  │Black  │Black  │
+│Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+BOTTOM ROW (Slots 45-53):
+┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│  🟡    │        │        │        │        │        │        │        │  🟡    │
+│Gold   │Black  │Black  │Black  │Black  │Black  │Black  │Black  │Gold   │
+│Corner │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Glass  │Corner │
+└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
+
+================================================================================
+
+BUTTON DETAILS:
+
+🟢 DEPOSIT (Slot 10):
+  - Material: LIME_TERRACOTTA
+  - Color: Green
+  - Action: Deposit items for cash
+
+🟧 WITHDRAW (Slot 11):
+  - Material: ORANGE_TERRACOTTA
+  - Color: Orange
+  - Action: Withdraw cash for items
+
+🟨 BALANCE (Slot 12):
+  - Material: YELLOW_TERRACOTTA
+  - Color: Yellow
+  - Action: View account balance
+
+🟦 TRANSFER (Slot 13):
+  - Material: CYAN_TERRACOTTA
+  - Color: Cyan/Blue
+  - Action: Transfer money to others
+
+🟣 HISTORY (Slot 14):
+  - Material: PURPLE_TERRACOTTA
+  - Color: Purple
+  - Action: View transaction history
+
+🟦 ATM DISPLAY (Slot 22):
+  - Material: LIGHT_BLUE_STAINED_GLASS_PANE
+  - Shows: "Extraction Bank", "Version 1.0", "✓ Connected", "✓ Secure", "✓ Ready"
+
+🟡 GOLD CORNERS (Slots 0, 8, 45, 53):
+  - Material: GOLD_BLOCK
+  - Purpose: Premium decorative corners
+
+🟢 LED LIGHTS (Slots 19, 20, 24, 25):
+  - Material: LIME_STAINED_GLASS_PANE
+  - Purpose: Modern tech aesthetic
+
+🟧 SCREEN BORDER (Slots 18, 21, 23, 26):
+  - Material: ORANGE_STAINED_GLASS_PANE
+  - Purpose: Visual separation for display
+
+🟡 CURRENCY ICONS (Slots 31-33):
+  - Gold Ingot: "Gold Coins"
+  - Iron Ingot: "Iron Coins"
+  - Emerald: "Emeralds"
+  - Purpose: Show accepted currencies
+
+================================================================================
+
+COLOR LEGEND:
+🟡 = Gold (GOLD_BLOCK)
+🟢 = Green (LIME_TERRACOTTA, LIME_STAINED_GLASS_PANE)
+🟣 = Purple (PURPLE_TERRACOTTA)
+🟦 = Blue/Cyan (LIGHT_BLUE_STAINED_GLASS_PANE, CYAN_TERRACOTTA)
+🟧 = Orange (ORANGE_TERRACOTTA, ORANGE_STAINED_GLASS_PANE)
+🟨 = Yellow (YELLOW_TERRACOTTA)
+⚫ = Black (BLACK_STAINED_GLASS_PANE)
+
+================================================================================

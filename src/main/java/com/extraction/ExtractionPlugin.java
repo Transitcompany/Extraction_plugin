@@ -3,6 +3,7 @@ package com.extraction;
 import com.extraction.auction.AuctionManager;
 
 import com.extraction.commands.AuctionCommand;
+import com.extraction.commands.AtmCommand;
 import com.extraction.commands.BalanceCommand;
 import com.extraction.commands.ClaimChestCommand;
 import com.extraction.commands.ClaimDoorCommand;
@@ -19,6 +20,7 @@ import com.extraction.commands.ExvCommand;
 import com.extraction.commands.DisabledCommand;
 import com.extraction.commands.LootChestSetCommand;
 import com.extraction.commands.ProfileCommand;
+import com.extraction.commands.RedeemCommand;
 import com.extraction.commands.ReportCommand;
 import com.extraction.commands.ResetLootCommand;
 import com.extraction.commands.RespawnHighLocCommand;
@@ -113,6 +115,7 @@ public class ExtractionPlugin extends JavaPlugin {
     private HighLocManager highLocManager;
     private LoginLogManager loginLogManager;
     private TermsOfServiceManager termsOfServiceManager;
+    private RedemptionCodeManager redemptionCodeManager;
     private String lobbyWorld = "world";
 
     @Override
@@ -142,7 +145,8 @@ public class ExtractionPlugin extends JavaPlugin {
              this.serverMapManager = new ServerMapManager(this);
              this.highLocManager = new HighLocManager(this);
               this.loginLogManager = new LoginLogManager(this);
-              this.termsOfServiceManager = new TermsOfServiceManager(this);
+               this.termsOfServiceManager = new TermsOfServiceManager(this);
+               this.redemptionCodeManager = new RedemptionCodeManager(this);
 
         // Add custom campfire recipe for rotten flesh to leather
         CampfireRecipe rottenFleshRecipe = new CampfireRecipe(
@@ -267,7 +271,8 @@ public class ExtractionPlugin extends JavaPlugin {
         getCommand("msg").setExecutor(new DisabledCommand());
         getCommand("tell").setExecutor(new DisabledCommand());
         getCommand("tos").setExecutor(new TosCommand(termsOfServiceManager));
-
+        getCommand("atm").setExecutor(new AtmCommand(this));
+        getCommand("redeem").setExecutor(new RedeemCommand(this));
 
     }
 
@@ -405,6 +410,10 @@ public class ExtractionPlugin extends JavaPlugin {
 
     public TermsOfServiceManager getTermsOfServiceManager() {
         return termsOfServiceManager;
+    }
+
+    public RedemptionCodeManager getRedemptionCodeManager() {
+        return redemptionCodeManager;
     }
 
     private void startHighLocSpawner() {

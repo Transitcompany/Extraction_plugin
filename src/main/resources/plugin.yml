@@ -126,3 +126,9 @@ commands:
   accept:
     description: Accept the Terms of Service
     usage: /accept
+  atm:
+    description: Open the ATM terminal
+    usage: /atm
+  redeem:
+    description: Redeem a code for deposit or withdrawal
+    usage: /redeem <code>

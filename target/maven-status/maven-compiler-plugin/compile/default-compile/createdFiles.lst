@@ -46,6 +46,8 @@ com\extraction\listeners\WeaponListener$2.class
 com\extraction\commands\RulesCommand.class
 com\extraction\extract\ExtractManager$3.class
 com\extraction\listeners\ProximityChatListener.class
+com\extraction\RedemptionCodeManager.class
+com\extraction\commands\AtmCommand.class
 com\extraction\commands\SetWorldCommand.class
 com\extraction\loot\LootContainerManager.class
 com\extraction\commands\SetHighLocCommand.class
@@ -96,6 +98,7 @@ com\extraction\managers\HighLocManager.class
 com\extraction\listeners\CustomItemListener$5.class
 com\extraction\managers\TermsOfServiceManager.class
 com\extraction\commands\ClaimChestCommand.class
+com\extraction\commands\RedeemCommand.class
 com\extraction\managers\TeamManager.class
 com\extraction\listeners\CustomItemListener$10.class
 com\extraction\listeners\CustomItemListener$7.class
