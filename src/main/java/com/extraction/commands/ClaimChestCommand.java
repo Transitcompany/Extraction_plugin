@@ -34,7 +34,7 @@ public class ClaimChestCommand implements CommandExecutor {
         // Find the chest the player is looking at
         Block targetBlock = getTargetChestBlock(player);
         if (targetBlock == null || !chestManager.isChestMaterial(targetBlock.getType())) {
-            player.sendMessage(ChatColor.RED + "You must be looking at a chest or barrel to claim it.");
+            player.sendMessage(ChatColor.RED + "You must be looking at a chest to claim it.");
             return true;
         }
 
@@ -43,11 +43,12 @@ public class ClaimChestCommand implements CommandExecutor {
             return true;
         }
 
-        int ironCost = chestManager.isDoubleChest(targetBlock.getLocation()) ? 30 : 15;
+        boolean isDouble = chestManager.isDoubleChest(targetBlock.getLocation());
+        int ironCost = isDouble ? 30 : 15;
 
         // Check for enough iron in inventory
         if (!hasEnoughIron(player, ironCost)) {
-            player.sendMessage(ChatColor.RED + "You need " + ironCost + " iron ingots to claim this " + (chestManager.isDoubleChest(targetBlock.getLocation()) ? "double chest" : "chest/barrel") + ".");
+            player.sendMessage(ChatColor.RED + "You need " + ironCost + " iron ingots to claim this " + (isDouble ? "double chest" : "chest") + ".");
             return true;
         }
 

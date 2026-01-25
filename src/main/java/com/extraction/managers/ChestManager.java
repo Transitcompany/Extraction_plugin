@@ -140,7 +140,7 @@ public class ChestManager {
     }
 
     public boolean isChestMaterial(Material material) {
-        return material == Material.CHEST || material == Material.BARREL;
+        return material == Material.CHEST;
     }
 
     private static class ChestClaim {
